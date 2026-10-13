@@ -199,9 +199,9 @@ img{display:block}
 .card .play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;display:none;pointer-events:none}
 .card.paused .play{display:block}
 /* first-time swipe tutorial (TikTok-style dim + white line-art hand) */
-.tut{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.62);display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;pointer-events:none;opacity:0;transition:opacity .25s}
+.tut{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.72);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding-bottom:26%;pointer-events:none;opacity:0;transition:opacity .25s}
 .tut.show{display:flex;opacity:1}
-.tut p{margin:0;font-size:16px;font-weight:600;line-height:1.4;text-align:center;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.tut p{margin:0;font-size:16px;font-weight:600;line-height:1.4;text-align:center;color:#fff;background:rgba(20,20,22,.85);padding:10px 18px;border-radius:14px}
 /* tutorial scene: a ghost card and a pointing hand drag right (red) then left (blue) on a shared timeline */
 .tut .tscene{position:relative;width:320px;height:210px}
 .tut .arr{position:absolute;top:72px;width:18px;height:18px;color:#fff;opacity:.35;animation:3.6s ease-in-out infinite}.tut .arr.l{left:-8px;animation-name:arrL}.tut .arr.r{right:-8px;animation-name:arrR}
@@ -209,7 +209,7 @@ img{display:block}
 .tut .tcard{position:absolute;left:100px;top:8px;width:120px;height:150px;border-radius:16px;border:2px solid rgba(255,255,255,.75);background:rgba(255,255,255,.06);transform-origin:50% 100%;animation:tutmove 3.6s cubic-bezier(.45,0,.25,1) infinite,tutglow 3.6s linear infinite}
 .tut .hg{position:absolute;left:136px;top:66px;width:64px;height:72px;animation:tutmove 3.6s cubic-bezier(.45,0,.25,1) infinite}
 .tut .hand{width:64px;height:72px;display:block;transform-origin:24px 10px;animation:tutpress 3.6s linear infinite}
-.tut .ring{position:absolute;left:24px;top:10px;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.18);opacity:0;animation:tutring 3.6s linear infinite}
+.tut .ring{position:absolute;left:24px;top:10px;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:rgba(255,255,255,.38);box-shadow:0 0 14px rgba(255,255,255,.35);opacity:0;animation:tutring 3.6s linear infinite}
 @keyframes tutmove{0%,10%{transform:translateX(0) rotate(0)}36%,42%{transform:translateX(58px) rotate(6deg)}52%,58%{transform:translateX(0) rotate(0)}84%,90%{transform:translateX(-58px) rotate(-6deg)}100%{transform:translateX(0) rotate(0)}}
 @keyframes tutglow{0%,12%,52%,60%,100%{border-color:rgba(255,255,255,.75);box-shadow:none}30%,44%{border-color:#f3355b;box-shadow:0 0 0 1px #f3355b,0 0 26px rgba(254,44,85,.8)}78%,92%{border-color:#54a0ff;box-shadow:0 0 0 1px #54a0ff,0 0 26px rgba(84,160,255,.8)}}
 @keyframes tutpress{0%,6%,46%,54%,94%,100%{transform:scale(1)}10%,42%,58%,90%{transform:scale(.93)}}
