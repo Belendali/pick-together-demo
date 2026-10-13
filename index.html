@@ -21,9 +21,10 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;margin:0;background:#000;color:var(--fg);font-family:var(--font);overflow:hidden;overscroll-behavior:none}
 body{display:flex;align-items:center;justify-content:center}
-html.bars,html.bars body{height:auto;overflow:auto}
-html.bars body{display:block}
-html.bars #app{height:100vh;height:100lvh;max-height:none;margin:0 auto}
+html.bars,html.bars body{height:auto;overflow:auto;overscroll-behavior:auto}
+html.bars body{display:block;min-height:calc(100lvh + 320px)}
+html.bars #app{position:fixed;inset:0;width:100%;height:100vh;height:100dvh;max-height:none;margin:0;border-radius:0}
+html.bars .gate{position:fixed}
 #app{position:relative;width:393px;height:852px;max-height:100%;background:var(--bg);overflow:hidden;border-radius:40px;box-shadow:0 30px 80px rgba(0,0,0,.6);user-select:none;-webkit-user-select:none}
 @media (max-width:480px),(max-height:900px){
   #app{width:100%;height:100%;border-radius:0;box-shadow:none}
@@ -616,9 +617,9 @@ const standalone=window.navigator.standalone===true||window.matchMedia('(display
 const touch=('ontouchstart' in window)&&window.innerWidth<=600;
 if(touch&&!standalone){
   document.documentElement.classList.add('bars');$('#gate').classList.add('show');
-  let started=false;const start=()=>{if(started)return;started=true;$('#gate').classList.remove('show');window.scrollTo(0,document.body.scrollHeight);boot();};
-  window.addEventListener('scroll',start,{passive:true});$('#gate').addEventListener('touchmove',start,{passive:true});$('#gate').addEventListener('click',start);
-  window.addEventListener('resize',()=>{if(started)window.scrollTo(0,document.body.scrollHeight);});
+  let started=false;const start=()=>{if(started)return;started=true;$('#gate').classList.remove('show');boot();};
+  window.addEventListener('scroll',()=>{if(window.scrollY>40)start();},{passive:true});
+  $('#gate').addEventListener('click',()=>{window.scrollBy({top:120,behavior:'smooth'});setTimeout(start,400);});
 }else{boot();}
 /* full-screen hint (only when not installed) */
 (function(){const standalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;if(standalone)return;const ios=/iPhone|iPad|iPod/.test(navigator.userAgent);const h=$('#fshint');if(!ios){$('#fshint-t').innerHTML='<b>Full screen:</b> tap once to go full screen, or add to Home screen from the ⋮ menu.';const go=()=>{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{});document.removeEventListener('pointerdown',go);};document.addEventListener('pointerdown',go);}
