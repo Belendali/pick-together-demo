@@ -53,6 +53,7 @@ img{display:block}
 .chat-head .more{width:24px;height:24px}
 .msgs{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:6px 14px 10px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
 .msgs .grp{margin-top:10px}
+.msgs.tipped{padding-bottom:74px} /* keep the last message clear of the tooltip */
 .msgs::-webkit-scrollbar{display:none}
 .row{display:flex;gap:10px;align-items:flex-end;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both}
 .row.me{justify-content:flex-end}
@@ -486,13 +487,13 @@ const SCRIPT=[
  {who:'me',text:'guys. pick ONE.'}
 ];
 async function playChat(){msgs.innerHTML='';for(const m of SCRIPT){await wait(m.post?900:650);msgs.appendChild(m.post?postCard(m.post,m.who):bubble(m.who,m.text));scrollBottom();}
- await wait(600);$('#reddot').classList.add('show');$('#tip').classList.add('show');}
+ await wait(600);$('#reddot').classList.add('show');$('#tip').classList.add('show');msgs.classList.add('tipped');scrollBottom();}
 function openSheet(){$('#dim1').classList.add('show');$('#halfsheet').classList.add('show');}
 function closeSheet(){$('#dim1').classList.remove('show');$('#halfsheet').classList.remove('show');}
 $('#sheet-x').onclick=()=>{closeSheet();state.sheetClosed=true;setTimeout(()=>{$('#reddot').classList.add('show');$('#tip').classList.add('show');},350);};
 $('#dim1').onclick=()=>{$('#sheet-x').click();};
 $('#sheet-go').onclick=()=>{closeSheet();openSelect();};
-function togglePlus(on){const m=$('#plusmenu'),p=$('#plus');if(on){$('#tip').classList.remove('show');m.classList.add('show');p.classList.add('on');setTimeout(scrollBottom,330);}else{m.classList.remove('show');p.classList.remove('on');}}
+function togglePlus(on){const m=$('#plusmenu'),p=$('#plus');if(on){$('#tip').classList.remove('show');msgs.classList.remove('tipped');m.classList.add('show');p.classList.add('on');setTimeout(scrollBottom,330);}else{m.classList.remove('show');p.classList.remove('on');}}
 $('#plus').onclick=()=>togglePlus(!$('#plusmenu').classList.contains('show'));
 msgs.addEventListener('pointerdown',()=>{if($('#plusmenu').classList.contains('show'))togglePlus(false);});
 $('#menu-pick').onclick=()=>{togglePlus(false);$('#reddot').classList.remove('show');openSelect();};
@@ -611,7 +612,7 @@ async function closeToChat(){show('chat');const win=state.winner;const p=byId(wi
  const after=[['maddie','FINALLY 😭 that took one minute'],['louis','ok '+p.name.toLowerCase()+' it is. sat 7?'],['me','checked resy — 7pm has a table for 5, booked ✓'],['awesun','7 works. finishing my makeup and heading out'],['sam',p.id==='lisa'?'fine but thai market next week 🍜':'fine but pho 778 next week 🍜'],['me','deal. see you all there 👋']];
  for(const [w,t] of after){await wait(900);msgs.appendChild(bubble(w,t));scrollBottom();}
  await wait(800);$('#replay').classList.add('show');}
-$('#replay').onclick=()=>{$('#replay').classList.remove('show');$('#reddot').classList.remove('show');$('#tip').classList.remove('show');boot();};
+$('#replay').onclick=()=>{$('#replay').classList.remove('show');$('#reddot').classList.remove('show');$('#tip').classList.remove('show');msgs.classList.remove('tipped');boot();};
 
 /* ---------- boot ---------- */
 function boot(){reset();show('chat');playChat();}
