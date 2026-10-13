@@ -72,7 +72,7 @@ img{display:block}
 .post .pl{display:flex;align-items:center;gap:2px;padding:4px 8px;height:36px;font-size:12px;font-weight:500;line-height:1.3;background:#272727}
 .post .pl img{width:25px;height:28px}
 .fwd{width:32px;height:32px;align-self:center;flex:0 0 auto}
-.composer{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:10px 16px calc(34px + env(safe-area-inset-bottom,0px)) 14px;background:var(--bg);transition:padding .32s cubic-bezier(.2,.8,.2,1)}
+.composer{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:10px 16px calc(8px + env(safe-area-inset-bottom,0px)) 14px;background:var(--bg);transition:padding .32s cubic-bezier(.2,.8,.2,1)}
 .composer .cam{width:26px;height:26px;flex:0 0 auto}
 .composer .pill{flex:1;height:43px;border-radius:999px;background:#1c1c1f;display:flex;align-items:center;gap:10px;padding:0 8px 0 18px;color:#8f8f94;font-size:15px}
 .composer .pill span{flex:1}
@@ -86,9 +86,10 @@ img{display:block}
 .tooltip::after{content:"";position:absolute;right:22px;bottom:-8px;border:9px solid transparent;border-top-color:#3b3b3d;border-bottom:0}
 
 /* plus menu: rows at y578 when open; composer sits 33pt above */
+.composer.open{padding-bottom:8px} /* menu open: the safe-area gap moves below the menu */
 .plusmenu{flex:0 0 auto;height:0;overflow:hidden;background:var(--bg);transition:height .32s cubic-bezier(.2,.8,.2,1)}
-.plusmenu.show{height:calc(274px + env(safe-area-inset-bottom,0px))}
-.plusmenu .grid{display:flex;flex-direction:column;gap:26px;padding:0 16px 0 12px}
+.plusmenu.show{height:calc(280px + env(safe-area-inset-bottom,0px))}
+.plusmenu .grid{display:flex;flex-direction:column;gap:26px;padding:15px 16px 0 12px}
 .plusmenu .r{display:flex}
 .plusmenu .it{width:93px;display:flex;flex-direction:column;align-items:center;gap:10px;font-size:12px;line-height:1.25;color:#ccccd1;text-align:center;position:relative}
 .plusmenu .it img{width:62px;height:62px;display:block}
@@ -493,7 +494,7 @@ function closeSheet(){$('#dim1').classList.remove('show');$('#halfsheet').classL
 $('#sheet-x').onclick=()=>{closeSheet();state.sheetClosed=true;setTimeout(()=>{$('#reddot').classList.add('show');$('#tip').classList.add('show');},350);};
 $('#dim1').onclick=()=>{$('#sheet-x').click();};
 $('#sheet-go').onclick=()=>{closeSheet();openSelect();};
-function togglePlus(on){const m=$('#plusmenu'),p=$('#plus');if(on){$('#tip').classList.remove('show');msgs.classList.remove('tipped');m.classList.add('show');p.classList.add('on');setTimeout(scrollBottom,330);}else{m.classList.remove('show');p.classList.remove('on');}}
+function togglePlus(on){const m=$('#plusmenu'),p=$('#plus');if(on){$('#tip').classList.remove('show');msgs.classList.remove('tipped');m.classList.add('show');p.classList.add('on');$('.composer').classList.add('open');setTimeout(scrollBottom,330);}else{m.classList.remove('show');p.classList.remove('on');$('.composer').classList.remove('open');}}
 $('#plus').onclick=()=>togglePlus(!$('#plusmenu').classList.contains('show'));
 msgs.addEventListener('pointerdown',()=>{if($('#plusmenu').classList.contains('show'))togglePlus(false);});
 $('#menu-pick').onclick=()=>{togglePlus(false);$('#reddot').classList.remove('show');openSelect();};
