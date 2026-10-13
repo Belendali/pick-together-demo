@@ -615,9 +615,11 @@ function boot(){reset();show('chat');playChat();}
 const standalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;
 const touch=('ontouchstart' in window)&&window.innerWidth<=600;
 if(touch&&!standalone){
-  document.documentElement.classList.add('bars');$('#gate').classList.add('show');
-  let started=false;const start=()=>{if(started)return;started=true;$('#gate').classList.remove('show');boot();};
-  window.addEventListener('scroll',()=>{if(window.scrollY>40)start();},{passive:true});
+  try{history.scrollRestoration='manual';}catch(e){}
+  document.documentElement.classList.add('bars');$('#gate').classList.add('show');window.scrollTo(0,0);
+  let started=false;const armed=Date.now()+400;const start=()=>{if(started)return;started=true;$('#gate').classList.remove('show');boot();};
+  window.addEventListener('scroll',()=>{if(Date.now()<armed){window.scrollTo(0,0);return;}if(window.scrollY>40)start();},{passive:true});
+  window.addEventListener('pageshow',e=>{if(e.persisted&&!started)window.scrollTo(0,0);});
   $('#gate').addEventListener('click',()=>{window.scrollBy({top:120,behavior:'smooth'});setTimeout(start,400);});
 }else{boot();}
 /* Android: go full screen on first tap (no-op on iOS) */
