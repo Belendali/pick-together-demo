@@ -79,6 +79,7 @@ img{display:block}
 .composer .pill img{width:26px;height:26px}
 .composer .plus{position:relative;width:29px;height:29px;flex:0 0 auto}
 .composer .plus img{width:29px;height:29px;display:block;position:absolute;left:0;top:0;transition:opacity .2s}
+.composer .plus.locked{pointer-events:none}
 .composer .plus .i-kb{opacity:0}.composer .plus.on .i-kb{opacity:1}.composer .plus.on .i-plus{opacity:0} /* + when closed, keyboard while the tools panel is open (TikTok) */
 .composer .plus .dot{position:absolute;right:-1px;top:-1px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--bg);transform:scale(0);transition:transform .25s cubic-bezier(.2,.9,.3,1.4)}
 .composer .plus .dot.show{transform:scale(1)}
@@ -505,15 +506,15 @@ const SCRIPT=[
  {who:'sam',post:'saskia'},
  {who:'me',text:'guys. pick ONE.'}
 ];
-async function playChat(){msgs.innerHTML='';for(const m of SCRIPT){await wait(m.post?900:650);msgs.appendChild(m.post?postCard(m.post,m.who):bubble(m.who,m.text));scrollBottom();}
- await wait(600);$('#reddot').classList.add('show');$('#tip').classList.add('show');msgs.classList.add('tipped');scrollBottom();}
+async function playChat(){state.chatDone=false;$('#plus').classList.add('locked');msgs.innerHTML='';for(const m of SCRIPT){await wait(m.post?900:650);msgs.appendChild(m.post?postCard(m.post,m.who):bubble(m.who,m.text));scrollBottom();}
+ await wait(600);$('#reddot').classList.add('show');$('#tip').classList.add('show');msgs.classList.add('tipped');scrollBottom();state.chatDone=true;$('#plus').classList.remove('locked');}
 function openSheet(){$('#dim1').classList.add('show');$('#halfsheet').classList.add('show');}
 function closeSheet(){$('#dim1').classList.remove('show');$('#halfsheet').classList.remove('show');}
 $('#sheet-x').onclick=()=>{closeSheet();state.sheetClosed=true;setTimeout(()=>{$('#reddot').classList.add('show');$('#tip').classList.add('show');},350);};
 $('#dim1').onclick=()=>{$('#sheet-x').click();};
 $('#sheet-go').onclick=()=>{closeSheet();openSelect();};
 function togglePlus(on){const m=$('#plusmenu'),p=$('#plus');if(on){$('#tip').classList.remove('show');msgs.classList.remove('tipped');m.classList.add('show');p.classList.add('on');$('.composer').classList.add('open');setTimeout(scrollBottom,330);}else{m.classList.remove('show');p.classList.remove('on');$('.composer').classList.remove('open');}}
-$('#plus').onclick=()=>togglePlus(!$('#plusmenu').classList.contains('show'));
+$('#plus').onclick=()=>{if(!state.chatDone)return;togglePlus(!$('#plusmenu').classList.contains('show'));};
 msgs.addEventListener('pointerdown',()=>{if($('#plusmenu').classList.contains('show'))togglePlus(false);});
 $('#menu-pick').onclick=()=>{togglePlus(false);$('#reddot').classList.remove('show');openSelect();};
 
