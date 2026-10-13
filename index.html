@@ -148,6 +148,7 @@ img{display:block}
 .cardset{width:290px;background:var(--chip);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:12px}
 .cardset .h{display:flex;gap:8px;align-items:center}
 .cardset .h .ic2{width:32px;height:32px;border-radius:8px;background:var(--red);display:grid;place-items:center;flex:0 0 auto}
+.cardset .h img.ic2{display:block;object-fit:cover}
 .cardset .h b{display:block;font-size:14px;font-weight:600}
 .cardset .h span{font-size:11px;color:var(--fg2)}
 .cardset .stack{position:relative;height:120px}
@@ -160,7 +161,7 @@ img{display:block}
 .avs span img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .avs span i{position:absolute;right:-2px;bottom:-2px;width:10px;height:10px;border-radius:50%;background:var(--green);border:1.5px solid #1c1c1e;transform:scale(0);transition:transform .25s cubic-bezier(.2,.9,.3,1.4)}
 .avs span.ok i{transform:scale(1)}
-.cardset .btn{height:44px;font-size:15px}
+.cardset .btn{height:43px;font-size:15px;border-radius:6px}
 .cardset.win .h .ic2{background:var(--green)}
 .cardset .hero{position:relative;height:150px;border-radius:12px;overflow:hidden}
 .cardset .hero img,.hero video{width:100%;height:100%;object-fit:cover}
@@ -528,10 +529,10 @@ $('#sel-x').onclick=()=>show('chat');
 $('#sel-send').onclick=async()=>{if(state.selected.length<2)return;state.deckIds=P.filter(p=>state.selected.includes(p.id)).map(p=>p.id);show('chat');$('#creating').classList.add('show');await wait(1500);$('#creating').classList.remove('show');postCardSet();};
 
 /* ---------- card set in chat ---------- */
-function cardSetEl(){const ids=state.deckIds;const c=el('div','cardset');c.innerHTML=`<div class="h"><div class="ic2">${ICONS.cards}</div><div><b>Pick Together</b><span>${ids.length} places · by Bella · closes in 24h</span></div></div>
+function cardSetEl(){const ids=state.deckIds;const c=el('div','cardset');c.innerHTML=`<div class="h"><img class="ic2" src="ui/cs_icon.png" alt=""><div><b>Pick Together</b><span>${ids.length} places · by Bella · closes in 24h</span></div></div>
  <div class="stack">${ids.slice(0,4).map((id,i)=>`<img src="${byId(id).img}" style="left:${i*60}px" alt="">`).join('')}${ids.length>4?`<div class="more">+${ids.length-4}</div>`:''}</div>
  <div class="st"><div class="avs">${['me','maddie','louis','awesun','sam'].map(w=>`<span data-w="${w}"><img src="${AV[w]}" alt=""><i></i></span>`).join('')}</div><span class="stt">0 of 5 decided</span></div>
- <button class="btn white">${ICONS.cards}Decide · 1 min</button>`;
+ <button class="btn white">Decide · 1 min</button>`;
  c.querySelector('.btn').onclick=()=>startSwipe();return c;}
 function postCardSet(){const r=el('div','row me');const c=cardSetEl();state.cardsetEl=c;r.appendChild(c);msgs.appendChild(r);scrollBottom();setTimeout(()=>{msgs.appendChild(bubble('maddie','finally 😭'));scrollBottom();},900);}
 
@@ -631,7 +632,7 @@ $('#rs-x').onclick=()=>closeToChat();
 
 /* ---------- back in chat ---------- */
 async function closeToChat(){show('chat');const win=state.winner;const p=byId(win.id);
- if(state.cardsetEl){const c=state.cardsetEl;c.classList.add('win');c.querySelector('.h .ic2').innerHTML=ICONS.check;c.querySelector('.h span').textContent='Decided · 5 of 5 · tie broken by TikTok';c.querySelector('.stack').outerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">WINNER</div><div class="t"><b>${p.name} 🎉</b><span>${win.must} Must go · ${win.either} Either way · ${p.meta.split(' · ').slice(0,2).join(' · ')}</span></div></div>`;c.querySelector('.st').remove();c.querySelector('.btn').outerHTML=`<div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>`;}
+ if(state.cardsetEl){const c=state.cardsetEl;c.classList.add('win');c.querySelector('.h .ic2').replaceWith(el('div','ic2',ICONS.check));c.querySelector('.h span').textContent='Decided · 5 of 5 · tie broken by TikTok';c.querySelector('.stack').outerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">WINNER</div><div class="t"><b>${p.name} 🎉</b><span>${win.must} Must go · ${win.either} Either way · ${p.meta.split(' · ').slice(0,2).join(' · ')}</span></div></div>`;c.querySelector('.st').remove();c.querySelector('.btn').outerHTML=`<div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>`;}
  msgs.appendChild(el('div','sys','Tie between the top two · TikTok picked 🎲'));scrollBottom();
  const after=[['maddie','FINALLY 😭 that took one minute'],['louis','ok '+p.name.toLowerCase()+' it is. sat 7?'],['me','checked resy — 7pm has a table for 5, booked ✓'],['awesun','7 works. finishing my makeup and heading out'],['sam',p.id==='lisa'?'fine but thai market next week 🍜':'fine but pho 778 next week 🍜'],['me','deal. see you all there 👋']];
  for(const [w,t] of after){await wait(900);msgs.appendChild(bubble(w,t));scrollBottom();}
