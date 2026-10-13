@@ -201,7 +201,13 @@ img{display:block}
 .card .tx span{font-size:13px;color:rgba(255,255,255,.8)}
 .card .tags{display:flex;gap:6px}
 .card .tags i{font-style:normal;font-size:11px;font-weight:600;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:4px}
-.card .sp{position:absolute;font-style:normal;font-size:18px;color:#fff;text-shadow:0 0 8px rgba(255,255,255,.9);opacity:.9;pointer-events:none}
+.card{--g:0}
+.card .sp{position:absolute;font-style:normal;font-size:18px;color:#fff;text-shadow:0 0 6px rgba(254,44,85,.9),0 0 14px rgba(254,44,85,.6);opacity:0;transition:opacity .2s;pointer-events:none}
+.card.glow-go .sp:not(.burst){opacity:1;animation:twinkle 1s ease-in-out infinite}.card.glow-go .sp:nth-of-type(2){animation-delay:.2s}.card.glow-go .sp:nth-of-type(3){animation-delay:.45s}.card.glow-go .sp:nth-of-type(4){animation-delay:.65s}.card.glow-go .sp:nth-of-type(5){animation-delay:.3s}
+@keyframes twinkle{0%,100%{transform:scale(.55) rotate(0);opacity:.45}50%{transform:scale(1.3) rotate(25deg);opacity:1}}
+.card .sp.burst{opacity:0;animation:burst .7s ease-out forwards}@keyframes burst{0%{transform:scale(0) rotate(0);opacity:0}30%{transform:scale(1.4) rotate(30deg);opacity:1}100%{transform:scale(.2) rotate(90deg) translateY(-30px);opacity:0}}
+.card .shine{position:absolute;inset:0;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.42) 50%,transparent 62%);transform:translateX(-130%);opacity:0;pointer-events:none}
+.card.go-commit .shine{animation:sweep .6s ease-out forwards}@keyframes sweep{0%{transform:translateX(-130%);opacity:1}100%{transform:translateX(130%);opacity:0}}
 .card .stamp{position:absolute;top:56px;padding:8px 14px;border-radius:999px;font-weight:800;font-size:22px;letter-spacing:.5px;opacity:0;transform:scale(.6);transition:opacity .12s,transform .12s;box-shadow:0 6px 14px rgba(0,0,0,.4)}
 .card .stamp.go{right:16px;background:#fff;color:var(--red);transform:scale(.6) rotate(-12deg)}
 .card .stamp.pass{left:16px;background:#2b2b2e;color:#ddd;border:2px solid #777;transform:scale(.6) rotate(12deg)}
@@ -210,7 +216,8 @@ img{display:block}
 .card .stamp.go.on{transform:scale(1) rotate(-12deg)}
 .card .stamp.pass.on{transform:scale(1) rotate(12deg)}
 .card .stamp.mid.on{transform:scale(1)}
-.card.glow-go{box-shadow:0 14px 34px rgba(0,0,0,.6),0 0 0 3px var(--red),0 0 36px rgba(254,44,85,.6)}
+/* neon edge + halo grow with drag progress --g (0..1); Figma: 1px #f3355b + 0 0 28px rgba(254,44,85,.7) */
+.card.glow-go{box-shadow:0 14px 34px rgba(0,0,0,.6),0 0 0 calc(1px + 1.5px*var(--g)) rgba(243,53,91,calc(.3 + .7*var(--g))),0 0 calc(6px + 30px*var(--g)) rgba(254,44,85,calc(.25 + .6*var(--g))),0 0 calc(60px*var(--g)) rgba(254,44,85,calc(.35*var(--g)))}
 .card.glow-pass{box-shadow:0 14px 34px rgba(0,0,0,.6),0 0 0 3px #666}
 .card.fly-right{transform:translate(140%,-10%) rotate(22deg)!important;opacity:0}
 .card.fly-left{transform:translate(-140%,-10%) rotate(-22deg)!important;opacity:0}
@@ -221,7 +228,8 @@ img{display:block}
 .acts button{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12px;color:var(--fg2);transition:transform .12s}.acts .cir{width:56px;height:56px;border-radius:50%;background:var(--chip);display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.4)}.acts .cir .ic{width:26px;height:26px}
 .acts button:active{transform:scale(.94)}
 .acts .mid .cir{background:var(--chip)}
-.acts .go{color:#fff}.acts .go .cir{background:var(--red);box-shadow:0 0 0 6px rgba(254,44,85,.18),0 0 22px rgba(254,44,85,.6)}
+.acts .go{color:#fff;--g:0}.acts .go .cir{background:var(--red);transform:scale(calc(1 + .28*var(--g)));transition:transform .1s ease-out,box-shadow .1s;box-shadow:0 0 0 6px rgba(254,44,85,calc(.18 + .2*var(--g))),0 0 calc(22px + 22px*var(--g)) rgba(254,44,85,calc(.6 + .4*var(--g)))}
+.acts .go.pop .cir{animation:gopop .5s cubic-bezier(.2,.9,.3,1.3)}@keyframes gopop{0%{transform:scale(1)}40%{transform:scale(1.42)}100%{transform:scale(1)}}
 .hint{text-align:center;font-size:11px;color:var(--fg3);padding:4px 0 calc(16px + env(safe-area-inset-bottom,0px))}
 .sticker{position:absolute;left:28px;top:44px;display:flex;align-items:center;gap:8px;background:#fff;color:var(--red);font-weight:800;font-size:28px;padding:10px 18px 10px 14px;border-radius:999px;border:5px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.45);transform:rotate(-10deg) scale(1.6);opacity:0;pointer-events:none}
 .sticker.on{animation:stick .32s cubic-bezier(.2,.9,.3,1.3) forwards}
@@ -403,14 +411,14 @@ img{display:block}
     <svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 10v6M12 7v.5"/></svg>
   </div>
   <div class="deck" id="deck"></div>
-  <div class="tut" id="tut"><div class="arrows"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div><svg class="hand" viewBox="0 0 56 62" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 32V10a4 4 0 118 0v16M24 22a4 4 0 118 0v8M32 26a4 4 0 118 0v8M40 30a4 4 0 118 0v10c0 10-6 18-16 18h-3c-6 0-10-3-13-8L4 38a4 4 0 016-5l6 6"/></svg><p>Swipe right for Let’s go,<br>left for Nope</p></div>
-  <div class="sticker" id="sticker">😋 LET’S GO!</div>
+  <div class="tut" id="tut"><div class="arrows"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div><svg class="hand" viewBox="0 0 56 62" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 32V10a4 4 0 118 0v16M24 22a4 4 0 118 0v8M32 26a4 4 0 118 0v8M40 30a4 4 0 118 0v10c0 10-6 18-16 18h-3c-6 0-10-3-13-8L4 38a4 4 0 016-5l6 6"/></svg><p>Swipe right for Must go,<br>left for Not for me</p></div>
+  <div class="sticker" id="sticker">😋 MUST GO!</div>
   <div class="acts">
-    <button id="b-pass"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M15.5 15.5a5 5 0 00-7 0"/></svg></span>Nope</button>
-    <button id="b-mid"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M9 15h6"/></svg></span>Sure</button>
-    <button class="go" id="b-go"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M8 14a4.5 4.5 0 008 0z"/></svg></span>Let’s go!</button>
+    <button id="b-pass"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M15.5 15.5a5 5 0 00-7 0"/></svg></span>Not for me</button>
+    <button id="b-mid"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M9 15h6"/></svg></span>Either way</button>
+    <button class="go" id="b-go"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M8 14a4.5 4.5 0 008 0z"/></svg></span>Must go</button>
   </div>
-  <div class="hint">Swipe right = Let’s go · left = Nope · tap Sure · votes stay private</div>
+  <div class="hint">Swipe right = Must go · left = Not for me · votes stay private</div>
 </section>
 
 <!-- ===================== WAITING ===================== -->
@@ -449,7 +457,7 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
 const AV={me:'img/av_me.jpg',maddie:'img/av_maddie.jpg',louis:'img/av_louis.jpg',awesun:'img/av_awesun.jpg',sam:'img/av_sam.jpg'};
 const NAME={me:'You',maddie:'Maddie',louis:'Louis',awesun:'Awesun',sam:'Sam'};
 const P=[
- {id:'liam',  img:'img/post_liam.jpg',  vid:'vid/liam.mp4',  name:'Thai market',       meta:'Thai · $$ · Queens · 2.1 mi',          by:'louis', cap:'Liam | Thai tea',      tags:['Must Eat','Veg options'], open:'Open till 10'},
+ {id:'liam',  img:'img/post_liam.jpg',  vid:'vid/liam.mp4',  name:'Thai market',       meta:'Thai · $$ · Queens · 2.1 mi',          by:'louis', cap:'Liam | Thai tea',      tags:['Must Eat','Vegetarian options'], open:'Open till 10'},
  {id:'lisa',  img:'img/post_lisa.jpg',  vid:'vid/lisa.mp4',  name:'Pho 778',           meta:'Vietnamese · $ · Chinatown · 1.4 mi',  by:'sam',   cap:'Lisa | China Town',    tags:['Community pick','Late night'], open:'Open till 11'},
  {id:'cass',  img:'img/post_cass.jpg',  vid:'vid/cass.mp4',  name:'Los Tacos No.1',    meta:'Tacos · $ · Chelsea · 2.7 mi',         by:'maddie',cap:'Cass | nyc foodie',    tags:['Cheap eats','Walk-in'], open:'Open till 11'},
  {id:'leona', img:'img/post_leona.jpg', vid:'vid/leona.mp4', name:'Sunday Morning',    meta:'Brunch · $$ · East Village · 3.1 mi',  by:'awesun',cap:'Leona | NYC',          tags:['Brunch','Groups'], open:'Open till 4'},
@@ -534,7 +542,7 @@ S.swipe.addEventListener('pointerdown',()=>{if($('#tut').classList.contains('sho
 function cardEl(p,pos){const c=el('div','card'+(pos?' b'+pos:''));c.dataset.id=p.id;
  c.innerHTML=`<video class="bg" src="${p.vid}" poster="${p.img}" muted loop playsinline preload="metadata"></video><div class="g"></div><div class="who"><img src="${AV[p.by]}" alt="">${NAME[p.by]}’s pick</div><div class="cnt">${state.idx+pos+1} / ${state.deckIds.length}</div><img class="play" src="ui/play.png" alt="">
  <div class="tx"><b>${p.name}</b><span>${p.meta} · ${p.open.toLowerCase()}</span><div class="tags">${p.tags.map(t=>'<i>'+t+'</i>').join('')}</div></div>
- <i class="sp" style="left:16%;top:14%">✦</i><i class="sp" style="left:78%;top:30%;font-size:14px">✦</i><i class="sp" style="left:24%;top:52%;font-size:12px">✧</i><div class="stamp go">LET’S GO</div><div class="stamp pass">NOPE</div><div class="stamp mid">SURE</div>`;return c;}
+ <i class="sp" style="left:4%;top:5%">✦</i><i class="sp" style="left:26%;top:26%;font-size:14px">✦</i><i class="sp" style="left:4%;top:55%;font-size:12px">✦</i><i class="sp" style="left:43%;top:4%;font-size:16px">✧</i><i class="sp" style="left:80%;top:40%;font-size:13px">✦</i><div class="stamp go">MUST GO</div><div class="stamp pass">NOT FOR ME</div><div class="stamp mid">EITHER WAY</div><div class="shine"></div>`;return c;}
 function renderDeck(){deck.innerHTML='';const ids=state.deckIds;for(let k=2;k>=0;k--){const id=ids[state.idx+k];if(!id)continue;deck.appendChild(cardEl(byId(id),k));}
  $('#sw-cnt').textContent=(state.idx+1)+' of '+ids.length;attachDrag();}
 let drag=null;
@@ -544,15 +552,16 @@ function attachDrag(){const c=top();if(!c)return;playTop();
  c.onpointerdown=e=>{if(c.classList.contains('fly-right')||c.classList.contains('fly-left')||c.classList.contains('fly-down'))return;drag={x:e.clientX,y:e.clientY,dx:0,dy:0};c.setPointerCapture(e.pointerId);c.classList.add('dragging');};
  c.onpointermove=e=>{if(!drag)return;drag.dx=e.clientX-drag.x;drag.dy=e.clientY-drag.y;const rot=drag.dx/14;c.style.transform=`translate(${drag.dx}px,${drag.dy*0.4}px) rotate(${rot}deg)`;
   const g=c.querySelector('.stamp.go'),p=c.querySelector('.stamp.pass');const t=Math.min(1,Math.abs(drag.dx)/90);
-  if(drag.dx>18){g.classList.add('on');g.style.opacity=t;p.classList.remove('on');c.classList.add('glow-go');c.classList.remove('glow-pass');}
-  else if(drag.dx<-18){p.classList.add('on');p.style.opacity=t;g.classList.remove('on');c.classList.add('glow-pass');c.classList.remove('glow-go');}
-  else{g.classList.remove('on');p.classList.remove('on');c.classList.remove('glow-go','glow-pass');}};
+  if(drag.dx>18){g.classList.add('on');g.style.opacity=t;p.classList.remove('on');c.classList.add('glow-go');c.classList.remove('glow-pass');c.style.setProperty('--g',t);$('#b-go').style.setProperty('--g',t);}
+  else if(drag.dx<-18){p.classList.add('on');p.style.opacity=t;g.classList.remove('on');c.classList.add('glow-pass');c.classList.remove('glow-go');$('#b-go').style.setProperty('--g',0);}
+  else{g.classList.remove('on');p.classList.remove('on');c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);$('#b-go').style.setProperty('--g',0);}};
  c.onpointerup=c.onpointercancel=e=>{if(!drag)return;const dx=drag.dx,dy=drag.dy;drag=null;c.classList.remove('dragging');
   if(Math.abs(dx)<6&&Math.abs(dy)<6&&e.type==='pointerup'){const v=c.querySelector('video');if(v){v.paused?v.play().catch(()=>{}):v.pause();}}
-  if(dx>100){vote(2);}else if(dx<-100){vote(0);}else{c.style.transform='';c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');}};}
+  if(dx>100){vote(2);}else if(dx<-100){vote(0);}else{c.style.transform='';c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);$('#b-go').style.setProperty('--g',0);}};}
+function sparkleBurst(c){for(let i=0;i<9;i++){const sp=el('i','sp burst',i%3?'✦':'✧');sp.style.left=(6+Math.random()*80)+'%';sp.style.top=(6+Math.random()*70)+'%';sp.style.fontSize=(10+Math.random()*14)+'px';sp.style.animationDelay=(Math.random()*.18)+'s';c.appendChild(sp);}}
 async function vote(v){const c=top();if(!c)return;const id=c.dataset.id;state.votes[id]=v;
  c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});
- if(v===2){c.classList.add('glow-go');const g=c.querySelector('.stamp.go');g.classList.add('on');g.style.opacity=1;const st=$('#sticker');st.classList.remove('on');void st.offsetWidth;st.classList.add('on');await wait(260);c.classList.add('fly-right');setTimeout(()=>st.classList.remove('on'),500);}
+ if(v===2){c.classList.add('glow-go','go-commit');c.style.setProperty('--g',1);sparkleBurst(c);const bg=$('#b-go');bg.style.setProperty('--g',0);bg.classList.remove('pop');void bg.offsetWidth;bg.classList.add('pop');setTimeout(()=>bg.classList.remove('pop'),520);const g=c.querySelector('.stamp.go');g.classList.add('on');g.style.opacity=1;const st=$('#sticker');st.classList.remove('on');void st.offsetWidth;st.classList.add('on');await wait(260);c.classList.add('fly-right');setTimeout(()=>st.classList.remove('on'),500);}
  else if(v===0){c.classList.add('glow-pass');const p=c.querySelector('.stamp.pass');p.classList.add('on');p.style.opacity=1;await wait(180);c.classList.add('fly-left');}
  else{const m=c.querySelector('.stamp.mid');m.classList.add('on');await wait(260);c.classList.add('fly-down');}
  c.onpointerdown=null;
@@ -572,7 +581,7 @@ function startWait(){const room=$('#room');room.innerHTML='';const cx=150,cy=140
  ORDER.forEach((w,i)=>{const a=-Math.PI/2+i*(Math.PI*2/5);const m=el('div','mem '+(w==='me'?'done':'idle'));m.dataset.w=w;m.style.left=Math.round(cx+R*Math.cos(a)-48)+'px';m.style.top=Math.round(cy+R*Math.sin(a)-40)+'px';
   m.innerHTML=`<div class="a"><img src="${AV[w]}" alt=""><div class="ring"></div><div class="ck">${ICONS.check}</div></div><b>${NAME[w]}</b><span>${w==='me'?'Picked':'Hasn’t started'}</span>`;room.appendChild(m);});
  const mine=$('#mine');mine.innerHTML='';const must=state.deckIds.filter(id=>state.votes[id]===2);must.slice(0,3).forEach(id=>{const i=el('img');i.src=byId(id).img;i.alt='';mine.appendChild(i);});
- const rest=state.deckIds.length-must.length;if(rest>0)mine.appendChild(el('div','',`+${rest}<br>sure`));
+ const rest=state.deckIds.length-must.length;if(rest>0)mine.appendChild(el('div','',`+${rest}<br>either way`));
  if(!must.length)mine.innerHTML='<div style="width:100%;border:0;text-align:left">No must-gos — everything counts as “either way”</div>';
  $('#wt-sub').textContent='1 of 5 picked · waiting for the others';
  // update chat card set
@@ -603,7 +612,7 @@ async function startResults(){const rows=tally();const [A,B]=rows;const res=$('#
   <div class="arena"><img class="tc a" src="${byId(A.id).img}" alt=""><img class="tc b" src="${byId(B.id).img}" alt=""><div class="vs">VS</div><div class="winbadge">WINNER</div></div>
   <div class="chip" id="chip">🎲 TikTok is choosing<span class="dots"><i></i><i></i><i></i></span></div></div>
   <div class="lh"><b>Everyone’s votes</b><span>5 of 5 picked</span></div>${rowsHtml(rows,[A.id,B.id])}
-  <div class="legend"><span>😄 Let’s go +2</span><span>🙂 Sure +1</span><span>🙁 Nope 0</span></div>`;
+  <div class="legend"><span>😄 Must go +2</span><span>🙂 Either way +1</span><span>🙁 Not for me 0</span></div>`;
  requestAnimationFrame(()=>res.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'px'));
  const tie=$('#tie');await wait(150);tie.classList.add('in');await wait(900);tie.classList.add('shuffle');await wait(3100);tie.classList.remove('shuffle');
  const win=Math.random()<0.5?A:B;state.winner=win;const wc=tie.querySelector(win===A?'.tc.a':'.tc.b'),lc=tie.querySelector(win===A?'.tc.b':'.tc.a');
@@ -611,17 +620,17 @@ async function startResults(){const rows=tally();const [A,B]=rows;const res=$('#
  $('#chip').innerHTML='🎉 '+byId(win.id).name+' it is';$('#tie-h').textContent='TikTok picked';tie.querySelector('.sub').textContent='Tied at '+A.pts+' pts · settled with a little animation';confetti();await wait(1800);finalResult(rows,win);}
 function confetti(){const c=$('#conf');const cols=['#fe2c55','#25f4ee','#fff','#3bd27a','#ffd166'];for(let i=0;i<40;i++){const p=el('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDelay=(Math.random()*.5)+'s';p.style.animationDuration=(1.2+Math.random()*.8)+'s';c.appendChild(p);}}
 function finalResult(rows,win){const p=byId(win.id);const res=$('#res');res.style.transition='opacity .25s';res.style.opacity=0;setTimeout(()=>{res.innerHTML=`<div class="hero"><video src="${p.vid}" poster="${p.img}" muted loop playsinline autoplay></video><div class="g"></div><div class="wb">${ICONS.check} WINNER</div>
-  <div class="t"><b>${p.name} 🎉</b><span>${p.meta}<br>${p.open} · Reservations via Resy</span><div class="v">${avs(win.voters,22)}${win.must} Let’s go · ${win.either} Sure · ${win.pts} pts</div></div></div>
+  <div class="t"><b>${p.name} 🎉</b><span>${p.meta}<br>${p.open} · Reservations via Resy</span><div class="v">${avs(win.voters,22)}${win.must} Must go · ${win.either} Either way · ${win.pts} pts</div></div></div>
   <div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>
   <div class="lh"><b>Everyone’s votes</b><span>5 of 5 picked · tie broken by TikTok</span></div>${rowsHtml(rows.filter(r=>r.id!==win.id),[])}
-  <div class="legend"><span>😄 Let’s go +2</span><span>🙂 Sure +1</span><span>🙁 Nope 0</span></div>`;
+  <div class="legend"><span>😄 Must go +2</span><span>🙂 Either way +1</span><span>🙁 Not for me 0</span></div>`;
   res.style.transition='opacity .35s';requestAnimationFrame(()=>{res.style.opacity=1;});requestAnimationFrame(()=>res.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'px'));
   res.querySelectorAll('.btn').forEach(b=>b.onclick=()=>b.textContent=b.textContent.includes('Directions')?'Opens Maps ↗':'Opens Resy ↗');},260);}
 $('#rs-x').onclick=()=>closeToChat();
 
 /* ---------- back in chat ---------- */
 async function closeToChat(){show('chat');const win=state.winner;const p=byId(win.id);
- if(state.cardsetEl){const c=state.cardsetEl;c.classList.add('win');c.querySelector('.h .ic2').innerHTML=ICONS.check;c.querySelector('.h span').textContent='Decided · 5 of 5 · tie broken by TikTok';c.querySelector('.stack').outerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">WINNER</div><div class="t"><b>${p.name} 🎉</b><span>${win.must} Let’s go · ${win.either} Sure · ${p.meta.split(' · ').slice(0,2).join(' · ')}</span></div></div>`;c.querySelector('.st').remove();c.querySelector('.btn').outerHTML=`<div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>`;}
+ if(state.cardsetEl){const c=state.cardsetEl;c.classList.add('win');c.querySelector('.h .ic2').innerHTML=ICONS.check;c.querySelector('.h span').textContent='Decided · 5 of 5 · tie broken by TikTok';c.querySelector('.stack').outerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">WINNER</div><div class="t"><b>${p.name} 🎉</b><span>${win.must} Must go · ${win.either} Either way · ${p.meta.split(' · ').slice(0,2).join(' · ')}</span></div></div>`;c.querySelector('.st').remove();c.querySelector('.btn').outerHTML=`<div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>`;}
  msgs.appendChild(el('div','sys','Tie between the top two · TikTok picked 🎲'));scrollBottom();
  const after=[['maddie','FINALLY 😭 that took one minute'],['louis','ok '+p.name.toLowerCase()+' it is. sat 7?'],['me','checked resy — 7pm has a table for 5, booked ✓'],['awesun','7 works. finishing my makeup and heading out'],['sam',p.id==='lisa'?'fine but thai market next week 🍜':'fine but pho 778 next week 🍜'],['me','deal. see you all there 👋']];
  for(const [w,t] of after){await wait(900);msgs.appendChild(bubble(w,t));scrollBottom();}
