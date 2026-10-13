@@ -309,7 +309,6 @@ img{display:block}
 <body>
 <div id="app">
 <div class="gate" id="gate"><div class="gate-in"><div class="gate-logo"><img src="ui/m_pick.png" alt=""></div><b>Pick Together</b><span>Swipe up to start</span><svg class="ic chevup" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></div></div>
-<div class="fshint" id="fshint"><span>📱</span><span id="fshint-t"><b>Full screen:</b> tap Share → <b>Add to Home Screen</b>, then open it from there.</span><button id="fshint-x">×</button></div>
 
 <!-- ===================== CHAT ===================== -->
 <section class="screen" id="s-chat">
@@ -621,9 +620,8 @@ if(touch&&!standalone){
   window.addEventListener('scroll',()=>{if(window.scrollY>40)start();},{passive:true});
   $('#gate').addEventListener('click',()=>{window.scrollBy({top:120,behavior:'smooth'});setTimeout(start,400);});
 }else{boot();}
-/* full-screen hint (only when not installed) */
-(function(){const standalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;if(standalone)return;const ios=/iPhone|iPad|iPod/.test(navigator.userAgent);const h=$('#fshint');if(!ios){$('#fshint-t').innerHTML='<b>Full screen:</b> tap once to go full screen, or add to Home screen from the ⋮ menu.';const go=()=>{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{});document.removeEventListener('pointerdown',go);};document.addEventListener('pointerdown',go);}
-const showH=()=>{h.classList.add('show');setTimeout(()=>h.classList.remove('show'),8000);};$('#fshint-x').onclick=()=>h.classList.remove('show');if(document.documentElement.classList.contains('bars')){window.addEventListener('scroll',()=>setTimeout(showH,1500),{once:true,passive:true});}else{setTimeout(showH,1200);}})();
+/* Android: go full screen on first tap (no-op on iOS) */
+(function(){const standalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;if(standalone)return;const ios=/iPhone|iPad|iPod/.test(navigator.userAgent);if(ios)return;const go=()=>{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{});document.removeEventListener('pointerdown',go);};document.addEventListener('pointerdown',go);})();
 })();
 </script>
 </body>
