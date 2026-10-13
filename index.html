@@ -162,7 +162,7 @@ img{display:block}
 .avs span i{position:absolute;right:-2px;bottom:-2px;width:10px;height:10px;border-radius:50%;background:var(--green);border:1.5px solid #1c1c1e;transform:scale(0);transition:transform .25s cubic-bezier(.2,.9,.3,1.4)}
 .avs span.ok i{transform:scale(1)}
 .cardset .btn{height:43px;font-size:15px;border-radius:6px}
-.cardset.win .h .ic2{background:var(--green)}
+.cardset .reacts{align-self:flex-start;display:inline-flex;align-items:center;gap:4px;background:#3a3a3c;border-radius:999px;padding:4px 10px 4px 8px;font-size:14px;line-height:1;margin-top:-4px;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both}.cardset .reacts span{font-size:12px;color:rgba(255,255,255,.7);margin-left:2px}
 .cardset .hero{position:relative;height:150px;border-radius:12px;overflow:hidden}
 .cardset .hero img,.hero video{width:100%;height:100%;object-fit:cover}
 .cardset .hero .g{position:absolute;inset:auto 0 0 0;height:90px;background:linear-gradient(transparent,rgba(0,0,0,.92))}
@@ -270,7 +270,8 @@ img{display:block}
 .mine .r{display:flex;gap:8px}
 .mine .r img{width:64px;height:84px;border-radius:12px;object-fit:cover;border:2px solid var(--red)}
 .mine .r div{width:64px;height:84px;border-radius:12px;border:1px dashed rgba(255,255,255,.2);display:grid;place-items:center;font-size:10px;color:var(--fg3);text-align:center;line-height:1.2}
-.wait-foot{padding:10px 16px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:8px;align-items:center;font-size:11px;color:var(--fg3)}
+.wait-foot{padding:10px 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;align-items:center;font-size:12px;color:rgba(255,255,255,.6)}
+.wait-foot .two{width:100%;margin-top:0}.wait-foot .two .btn{height:46px;font-size:15px;border-radius:8px;gap:6px}.btn.ghost{color:#fff}
 
 /* ---------- RESULTS ---------- */
 .res{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 16px calc(24px + env(safe-area-inset-bottom,0px))}
@@ -440,9 +441,9 @@ img{display:block}
     <div class="sub" id="wt-sub">1 of 5 picked · waiting for the others</div>
     <div class="room" id="room"></div>
     <div class="count"><svg class="ic" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 7v5l3 2"/></svg><span id="wt-count">Everyone’s in within <b>5</b>s</span></div>
-    <div class="mine"><div class="l">😄 YOUR LET’S GO <span>· sealed until it closes</span></div><div class="r" id="mine"></div></div>
+    <div class="mine"><div class="l">😄 YOUR MUST GO <span>· sealed until it closes</span></div><div class="r" id="mine"></div></div>
   </div>
-  <div class="wait-foot"><span id="wt-foot">We’ll ping the chat the moment everyone’s in</span></div>
+  <div class="wait-foot"><span id="wt-foot">You can reveal anytime · 1 of 5 picked</span><div class="two"><button class="btn white" id="wt-reveal"><svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="3" style="fill:none;stroke:currentColor;stroke-width:2"/></svg>Reveal now</button><button class="btn ghost" id="wt-back">Back to chat</button></div></div>
 </section>
 
 <!-- ===================== RESULTS ===================== -->
@@ -506,11 +507,11 @@ const SCRIPT=[
  {who:'awesun',text:'not thai again 😭'},
  {who:'sam',post:'lisa'},
  {who:'maddie',post:'cass'},
- {who:'louis',text:'too far for me tbh'},
+ {who:'louis',text:'too far for me tbh 😩'},
  {who:'awesun',post:'leona'},
  {who:'maddie',text:'This looks good ❤️'},
  {who:'sam',post:'saskia'},
- {who:'me',text:'guys. pick ONE.'}
+ {who:'me',text:'guys. pick ONE. 🙏'}
 ];
 async function playChat(){state.chatDone=false;$('#plus').classList.add('locked');msgs.innerHTML='';for(const m of SCRIPT){await wait(m.post?900:650);msgs.appendChild(m.post?postCard(m.post,m.who):bubble(m.who,m.text));scrollBottom();}
  await wait(600);$('#reddot').classList.add('show');$('#tip').classList.add('show');msgs.classList.add('tipped');scrollBottom();state.chatDone=true;$('#plus').classList.remove('locked');}
@@ -592,7 +593,7 @@ function startWait(){const room=$('#room');room.innerHTML='';const cx=150,cy=140
  const mine=$('#mine');mine.innerHTML='';const must=state.deckIds.filter(id=>state.votes[id]===2);must.slice(0,3).forEach(id=>{const i=el('img');i.src=byId(id).img;i.alt='';mine.appendChild(i);});
  const rest=state.deckIds.length-must.length;if(rest>0)mine.appendChild(el('div','',`+${rest}<br>either way`));
  if(!must.length)mine.innerHTML='<div style="width:100%;border:0;text-align:left">No must-gos — everything counts as “either way”</div>';
- $('#wt-sub').textContent='1 of 5 picked · waiting for the others';
+ $('#wt-sub').textContent='1 of 5 picked · waiting for the others';state.revealed=false;$('#wt-foot').textContent='You can reveal anytime · 1 of 5 picked';
  // update chat card set
  const c=state.cardsetEl;if(c){c.querySelector('[data-w=me]').classList.add('ok');c.querySelector('.stt').textContent='1 of 5 decided';}
  show('wait');runCountdown();}
@@ -600,10 +601,11 @@ async function runCountdown(){const bots=['maddie','louis','sam','awesun'];let n
  const mark=(w,st)=>{const m=document.querySelector(`.mem[data-w=${w}]`);m.classList.remove('idle','swiping','done');m.classList.add(st);m.querySelector('span').textContent=st==='done'?'Picked':st==='swiping'?'Swiping…':'Hasn’t started';if(st==='done'&&state.cardsetEl){state.cardsetEl.querySelector(`[data-w=${w}]`).classList.add('ok');}};
  let done=1;
  for(let i=0;i<5;i++){cnt.innerHTML=`Everyone’s in within <b>${n-i}</b>s`;
-  const w=bots[i];if(w){mark(w,'swiping');setTimeout(()=>{mark(w,'done');done++;$('#wt-sub').textContent=done+' of 5 picked'+(done<5?' · waiting for the others':'');if(state.cardsetEl)state.cardsetEl.querySelector('.stt').textContent=done+' of 5 decided';},600);}
+  const w=bots[i];if(w){mark(w,'swiping');setTimeout(()=>{mark(w,'done');done++;$('#wt-sub').textContent=done+' of 5 picked'+(done<5?' · waiting for the others':'');if(!state.revealed)$('#wt-foot').textContent='You can reveal anytime · '+done+' of 5 picked';if(state.cardsetEl)state.cardsetEl.querySelector('.stt').textContent=done+' of 5 decided';},600);}
   await wait(1000);}
- cnt.innerHTML='Everyone’s in ✓';$('#wt-foot').textContent='Opening results…';await wait(700);startResults();}
-$('#wt-x').onclick=()=>show('chat');
+ if(state.revealed)return;cnt.innerHTML='Everyone’s in ✓';$('#wt-foot').textContent='Opening results…';await wait(700);if(!state.revealed){state.revealed=true;startResults();}}
+$('#wt-x').onclick=()=>show('chat');$('#wt-back').onclick=()=>show('chat');
+$('#wt-reveal').onclick=()=>{if(state.revealed)return;state.revealed=true;$('#wt-foot').textContent='Revealing…';startResults();};
 
 /* ---------- results ---------- */
 const BOT={maddie:{liam:2,lisa:1,cass:2,leona:1,saskia:0},louis:{liam:2,lisa:2,cass:0,leona:1,saskia:1},awesun:{liam:0,lisa:2,cass:1,leona:2,saskia:1},sam:{liam:1,lisa:2,cass:0,leona:0,saskia:2}};
@@ -639,9 +641,10 @@ $('#rs-x').onclick=()=>closeToChat();
 
 /* ---------- back in chat ---------- */
 async function closeToChat(){show('chat');const win=state.winner;const p=byId(win.id);
- if(state.cardsetEl){const c=state.cardsetEl;c.classList.add('win');c.querySelector('.h .ic2').replaceWith(el('div','ic2',ICONS.check));c.querySelector('.h span').textContent='Decided · 5 of 5 · tie broken by TikTok';c.querySelector('.stack').outerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">WINNER</div><div class="t"><b>${p.name} 🎉</b><span>${win.must} Must go · ${win.either} Either way · ${p.meta.split(' · ').slice(0,2).join(' · ')}</span></div></div>`;c.querySelector('.st').remove();c.querySelector('.btn').outerHTML=`<div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>`;}
+ if(state.cardsetEl){const c=state.cardsetEl;c.classList.add('win');c.querySelector('.h span').textContent='Decided';c.querySelector('.stack').outerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">WINNER</div><div class="t"><b>${p.name} 🎉</b><span>${win.must} Must go · ${win.either} Either way · ${p.meta.split(' · ').slice(0,2).join(' · ')}</span></div></div>`;c.querySelector('.st').remove();c.querySelector('.btn').outerHTML=`<div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>`;}
  msgs.appendChild(el('div','sys','Tie between the top two · TikTok picked 🎲'));scrollBottom();
- const after=[['maddie','FINALLY 😭 that took one minute'],['louis','ok '+p.name.toLowerCase()+' it is. sat 7?'],['me','checked resy — 7pm has a table for 5, booked ✓'],['awesun','7 works. finishing my makeup and heading out'],['sam',p.id==='lisa'?'fine but thai market next week 🍜':'fine but pho 778 next week 🍜'],['me','deal. see you all there 👋']];
+ if(state.cardsetEl){setTimeout(()=>{state.cardsetEl.appendChild(el('div','reacts','🎉🔥😭<span>4</span>'));scrollBottom();},700);}
+ const after=[['maddie','FINALLY 😭 that took one minute'],['louis','ok '+p.name.toLowerCase()+' it is. sat 7? 🍽️'],['me','checked resy — 7pm has a table for 5, booked ✓'],['awesun','7 works. finishing my makeup and heading out 💄'],['sam',p.id==='lisa'?'fine but thai market next week 🍜':'fine but pho 778 next week 🍜'],['me','deal. see you all there 👋']];
  for(const [w,t] of after){await wait(900);msgs.appendChild(bubble(w,t));scrollBottom();}
  await wait(800);$('#replay').classList.add('show');}
 $('#replay').onclick=()=>{$('#replay').classList.remove('show');$('#reddot').classList.remove('show');$('#tip').classList.remove('show');msgs.classList.remove('tipped');boot();};
