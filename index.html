@@ -148,7 +148,7 @@ img{display:block}
 .cardset .btn{height:44px;font-size:15px}
 .cardset.win .h .ic2{background:var(--green)}
 .cardset .hero{position:relative;height:150px;border-radius:12px;overflow:hidden}
-.cardset .hero img{width:100%;height:100%;object-fit:cover}
+.cardset .hero img,.hero video{width:100%;height:100%;object-fit:cover}
 .cardset .hero .g{position:absolute;inset:auto 0 0 0;height:90px;background:linear-gradient(transparent,rgba(0,0,0,.92))}
 .cardset .hero .t{position:absolute;left:12px;bottom:10px}
 .cardset .hero .t b{display:block;font-size:18px;font-weight:700}
@@ -168,7 +168,7 @@ img{display:block}
 .deck{position:relative;flex:1;margin:10px 24px 40px}
 .card{position:absolute;left:0;top:0;width:100%;height:100%;border-radius:20px;overflow:hidden;background:#111;box-shadow:0 14px 34px rgba(0,0,0,.6);transform-origin:50% 100%;touch-action:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s,box-shadow .2s}
 .card.dragging{transition:none}
-.card img.bg{width:100%;height:100%;object-fit:cover}
+.card img.bg,.card video.bg{width:100%;height:100%;object-fit:cover;background:#111}
 .card .g{position:absolute;inset:auto 0 0 0;height:50%;background:linear-gradient(transparent,rgba(0,0,0,.92))}
 .card .who{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;background:rgba(20,20,22,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 4px;font-size:12px;font-weight:600}
 .card .who img{width:22px;height:22px;border-radius:50%}
@@ -264,7 +264,7 @@ img{display:block}
 .confetti i{position:absolute;top:-10px;width:7px;height:11px;border-radius:2px;animation:fall 1.6s ease-in forwards}
 @keyframes fall{to{transform:translateY(260px) rotate(540deg);opacity:0}}
 .hero{position:relative;height:300px;border-radius:20px;overflow:hidden;box-shadow:0 0 30px rgba(254,44,85,.45),0 10px 24px rgba(0,0,0,.5);animation:pop .5s both}
-.hero img{width:100%;height:100%;object-fit:cover}
+.hero img,.hero video{width:100%;height:100%;object-fit:cover}
 .hero .g{position:absolute;inset:auto 0 0 0;height:190px;background:linear-gradient(transparent,rgba(0,0,0,.95))}
 .hero .wb{position:absolute;left:14px;top:14px;background:var(--green);color:#000;font-size:11px;font-weight:800;letter-spacing:1px;padding:6px 12px;border-radius:999px;display:flex;align-items:center;gap:6px}
 .hero .t{position:absolute;left:16px;right:16px;bottom:14px;display:flex;flex-direction:column;gap:6px}
@@ -428,11 +428,11 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
 const AV={me:'img/av_me.jpg',maddie:'img/av_maddie.jpg',louis:'img/av_louis.jpg',awesun:'img/av_awesun.jpg',sam:'img/av_sam.jpg'};
 const NAME={me:'You',maddie:'Maddie',louis:'Louis',awesun:'Awesun',sam:'Sam'};
 const P=[
- {id:'liam',  img:'img/post_liam.jpg',  name:'Thai market',     meta:'Thai · $$ · Queens · 2.1 mi',           by:'louis', cap:'Liam | Thai tea',      tags:['Must Eat','Veg options'], open:'Open till 10'},
- {id:'lisa',  img:'img/post_lisa.jpg',  name:'Pho 778',         meta:'Vietnamese · $ · Chinatown · 1.4 mi',   by:'sam',   cap:'Lisa | China Town',    tags:['Community pick','Late night'], open:'Open till 11'},
- {id:'cass',  img:'img/post_cass.jpg',  name:'Tompkins Bagels', meta:'Bagels · $ · East Village · 2.7 mi',    by:'maddie',cap:'Cass | nyc foodie',    tags:['Must Eat','Brunch'], open:'Open till 4'},
- {id:'leona', img:'img/post_leona.jpg', name:'Rubirosa',        meta:'Pizza · $$ · Nolita · 3.1 mi',          by:'awesun',cap:'Leona | NYC',          tags:['Groups','Late night'], open:'Open till 11'},
- {id:'saskia',img:'img/post_saskia.jpg',name:'Cold CO',         meta:'Dessert · $ · Times Sq · 2.4 mi',       by:'sam',   cap:'Saskia | Time Square', tags:['Dessert','Walk-in'], open:'Open till 12'}
+ {id:'liam',  img:'img/post_liam.jpg',  vid:'vid/liam.mp4',  name:'Thai market',       meta:'Thai · $$ · Queens · 2.1 mi',          by:'louis', cap:'Liam | Thai tea',      tags:['Must Eat','Veg options'], open:'Open till 10'},
+ {id:'lisa',  img:'img/post_lisa.jpg',  vid:'vid/lisa.mp4',  name:'Pho 778',           meta:'Vietnamese · $ · Chinatown · 1.4 mi',  by:'sam',   cap:'Lisa | China Town',    tags:['Community pick','Late night'], open:'Open till 11'},
+ {id:'cass',  img:'img/post_cass.jpg',  vid:'vid/cass.mp4',  name:'Los Tacos No.1',    meta:'Tacos · $ · Chelsea · 2.7 mi',         by:'maddie',cap:'Cass | nyc foodie',    tags:['Cheap eats','Walk-in'], open:'Open till 11'},
+ {id:'leona', img:'img/post_leona.jpg', vid:'vid/leona.mp4', name:'Sunday Morning',    meta:'Brunch · $$ · East Village · 3.1 mi',  by:'awesun',cap:'Leona | NYC',          tags:['Brunch','Groups'], open:'Open till 4'},
+ {id:'saskia',img:'img/post_saskia.jpg',vid:'vid/saskia.mp4',name:'The C Cafe & Wine', meta:'Café · $$ · West Village · 2.4 mi',    by:'sam',   cap:'Saskia | West Village',tags:['Outdoor seats','Wine'], open:'Open till 12'}
 ];
 const byId=id=>P.find(p=>p.id===id);
 const ICONS={
@@ -506,14 +506,15 @@ function postCardSet(){const r=el('div','row me');const c=cardSetEl();state.card
 const deck=$('#deck');
 function startSwipe(){state.idx=0;state.votes={};renderDeck();show('swipe');}
 function cardEl(p,pos){const c=el('div','card'+(pos?' b'+pos:''));c.dataset.id=p.id;
- c.innerHTML=`<img class="bg" src="${p.img}" alt=""><div class="g"></div><div class="who"><img src="${AV[p.by]}" alt="">${NAME[p.by]}’s pick</div><div class="cnt">${state.idx+pos+1} / ${state.deckIds.length}</div><div class="play">${ICONS.play}</div>
+ c.innerHTML=`<video class="bg" src="${p.vid}" poster="${p.img}" muted loop playsinline preload="metadata"></video><div class="g"></div><div class="who"><img src="${AV[p.by]}" alt="">${NAME[p.by]}’s pick</div><div class="cnt">${state.idx+pos+1} / ${state.deckIds.length}</div><div class="play">${ICONS.play}</div>
  <div class="tx"><b>${p.name}</b><span>${p.meta} · ${p.open.toLowerCase()}</span><div class="tags">${p.tags.map(t=>'<i>'+t+'</i>').join('')}</div></div>
  <div class="stamp go">MUST GO</div><div class="stamp pass">PASS</div><div class="stamp mid">EITHER WAY</div>`;return c;}
 function renderDeck(){deck.innerHTML='';const ids=state.deckIds;for(let k=2;k>=0;k--){const id=ids[state.idx+k];if(!id)continue;deck.appendChild(cardEl(byId(id),k));}
  $('#sw-cnt').textContent=(state.idx+1)+' of '+ids.length;attachDrag();}
 let drag=null;
 function top(){return deck.querySelector('.card:not(.b1):not(.b2)');}
-function attachDrag(){const c=top();if(!c)return;
+function playTop(){deck.querySelectorAll('video').forEach(v=>{v.pause();});const c=top();if(!c)return;const v=c.querySelector('video');if(v){v.muted=true;v.play().catch(()=>{});}const n=deck.querySelector('.card.b1 video');if(n)n.preload='auto';}
+function attachDrag(){const c=top();if(!c)return;playTop();
  c.onpointerdown=e=>{if(c.classList.contains('fly-right')||c.classList.contains('fly-left')||c.classList.contains('fly-down'))return;drag={x:e.clientX,y:e.clientY,dx:0,dy:0};c.setPointerCapture(e.pointerId);c.classList.add('dragging');};
  c.onpointermove=e=>{if(!drag)return;drag.dx=e.clientX-drag.x;drag.dy=e.clientY-drag.y;const rot=drag.dx/14;c.style.transform=`translate(${drag.dx}px,${drag.dy*0.4}px) rotate(${rot}deg)`;
   const g=c.querySelector('.stamp.go'),p=c.querySelector('.stamp.pass');const t=Math.min(1,Math.abs(drag.dx)/90);
@@ -536,7 +537,7 @@ async function vote(v){const c=top();if(!c)return;const id=c.dataset.id;state.vo
  $('#sw-cnt').textContent=(state.idx+1)+' of '+state.deckIds.length;attachDrag();}
 $('#b-go').onclick=()=>vote(2);$('#b-mid').onclick=()=>vote(1);$('#b-pass').onclick=()=>vote(0);
 document.addEventListener('keydown',e=>{if(S.swipe.classList.contains('off'))return;if(e.key==='ArrowRight')vote(2);if(e.key==='ArrowLeft')vote(0);if(e.key==='ArrowDown')vote(1);});
-$('#sw-x').onclick=()=>show('chat');
+$('#sw-x').onclick=()=>{deck.querySelectorAll('video').forEach(v=>v.pause());show('chat');};
 
 /* ---------- waiting ---------- */
 const ORDER=['me','maddie','louis','sam','awesun'];
@@ -582,7 +583,7 @@ async function startResults(){const rows=tally();const [A,B]=rows;const res=$('#
  wc.classList.add('win');lc.classList.add('lose');wc.style.setProperty('--cx',win===A?'70px':'-70px');tie.querySelector('.winbadge').style.setProperty('--cx',win===A?'-70px':'70px');tie.classList.add('pick');
  $('#chip').innerHTML='🎉 '+byId(win.id).name+' it is';$('#tie-h').textContent='TikTok picked';tie.querySelector('.sub').textContent='Tied at '+A.pts+' pts · settled with a little animation';confetti();await wait(1800);finalResult(rows,win);}
 function confetti(){const c=$('#conf');const cols=['#fe2c55','#25f4ee','#fff','#3bd27a','#ffd166'];for(let i=0;i<40;i++){const p=el('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDelay=(Math.random()*.5)+'s';p.style.animationDuration=(1.2+Math.random()*.8)+'s';c.appendChild(p);}}
-function finalResult(rows,win){const p=byId(win.id);const res=$('#res');res.style.transition='opacity .25s';res.style.opacity=0;setTimeout(()=>{res.innerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">${ICONS.check} WINNER</div>
+function finalResult(rows,win){const p=byId(win.id);const res=$('#res');res.style.transition='opacity .25s';res.style.opacity=0;setTimeout(()=>{res.innerHTML=`<div class="hero"><video src="${p.vid}" poster="${p.img}" muted loop playsinline autoplay></video><div class="g"></div><div class="wb">${ICONS.check} WINNER</div>
   <div class="t"><b>${p.name} 🎉</b><span>${p.meta}<br>${p.open} · Reservations via Resy</span><div class="v">${avs(win.voters,22)}${win.must} Must go · ${win.either} Either way · ${win.pts} pts</div></div></div>
   <div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>
   <div class="lh"><b>Everyone’s votes</b><span>5 of 5 picked · tie broken by TikTok</span></div>${rowsHtml(rows.filter(r=>r.id!==win.id),[])}
