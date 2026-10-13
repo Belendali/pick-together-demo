@@ -53,6 +53,7 @@ img{display:block}
 .chat-head .more{width:24px;height:24px}
 .msgs{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:6px 14px 10px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
 .msgs .grp{margin-top:10px}
+.row.noav .av{visibility:hidden} /* TikTok shows one avatar per sender group, on the last message */
 .msgs.tipped{padding-bottom:74px} /* keep the last message clear of the tooltip */
 .msgs::-webkit-scrollbar{display:none}
 .row{display:flex;gap:10px;align-items:flex-end;animation:pop .35s cubic-bezier(.2,.9,.3,1.2) both}
@@ -233,14 +234,14 @@ img{display:block}
 .acts button{--p:0;display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12px;color:var(--fg2);transition:color .15s}.acts button.lit{color:#fff}
 .acts .cir{position:relative;overflow:hidden;width:56px;height:56px;border-radius:50%;background:var(--chip);display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.4);transition:transform .1s ease-out,box-shadow .1s}
 .acts .cir::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--c,transparent);opacity:var(--p)}
-.acts .cir .ic{position:relative;width:26px;height:26px;overflow:visible}.acts .ic .f0{opacity:calc(1 - var(--p))}.acts .ic .f1{opacity:var(--p)}.acts .ic .fill{fill:currentColor}
+.acts .cir .ic{position:relative;width:26px;height:26px;overflow:visible}.acts .ic .f0{opacity:calc(1 - var(--p))}.acts .ic .f1{opacity:var(--p)}.acts .ic .fill{fill:currentColor}.acts .ic .star{stroke-width:.6;transform-origin:12px 10px;transform:scale(calc(.6 + .6*var(--p))) rotate(calc(-40deg + 40deg*var(--p)))}
 .acts button:active .cir{transform:scale(.94)}
 .acts .go{--c:var(--red)}.acts .go .cir{transform:scale(calc(1 + .3*var(--p))) rotate(calc(6deg*var(--p)));box-shadow:0 4px 10px rgba(0,0,0,.4),0 0 0 calc(6px*var(--p)) rgba(254,44,85,.22),0 0 calc(30px*var(--p)) rgba(254,44,85,.85)}
 .acts .pass{--c:var(--blue)}.acts .pass .cir{transform:scale(calc(1 + .24*var(--p))) rotate(calc(-10deg*var(--p)));box-shadow:0 4px 10px rgba(0,0,0,.4),0 0 0 calc(6px*var(--p)) rgba(84,160,255,.22),0 0 calc(28px*var(--p)) rgba(84,160,255,.85)}
 .acts .go.pop .cir{animation:gopop .5s cubic-bezier(.2,.9,.3,1.3)}@keyframes gopop{0%{transform:scale(1)}40%{transform:scale(1.45) rotate(8deg)}100%{transform:scale(1)}}
 .acts .pass.pop .cir{animation:passpop .5s ease-out}@keyframes passpop{0%{transform:scale(1)}30%{transform:scale(1.3) rotate(-14deg)}55%{transform:scale(1.25) rotate(10deg)}75%{transform:scale(1.2) rotate(-6deg)}100%{transform:scale(1)}}
 .hint{text-align:center;font-size:11px;color:var(--fg3);padding:4px 0 calc(16px + env(safe-area-inset-bottom,0px))}
-.hint.skip{display:flex;flex-direction:column;align-items:center;gap:2px;color:rgba(255,255,255,.6);transition:color .15s}.hint.skip .chev{width:16px;height:16px;animation:nudge 1.6s ease-in-out infinite}.hint.skip.hot{color:#fff}
+.hint.skip{display:flex;flex-direction:column;align-items:center;gap:2px;color:rgba(255,255,255,.6);transition:color .15s}.hint.skip .chev{width:16px;height:16px;animation:nudge 1.6s ease-in-out infinite}.hint.skip.hot{color:#fff}.hint.skip.gone{opacity:0;pointer-events:none;transition:opacity .3s}
 .card.fly-up{transform:translateY(-130%) scale(.9) rotate(0)!important;opacity:0}
 .sticker{position:absolute;left:28px;top:44px;display:flex;align-items:center;gap:8px;background:#fff;color:var(--red);font-weight:800;font-size:28px;padding:10px 18px 10px 14px;border-radius:999px;border:5px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.45);transform:rotate(-10deg) scale(1.6);opacity:0;pointer-events:none}
 .sticker.on{animation:stick .32s cubic-bezier(.2,.9,.3,1.3) forwards}
@@ -428,7 +429,7 @@ img{display:block}
   <div class="acts">
     <button class="pass" id="b-pass"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path class="f0" d="M9 10h.01M15 10h.01M15.5 15.5a5 5 0 00-7 0"/><path class="f1" d="M7 8.5l3.2 1.3M17 8.5l-3.2 1.3M9 12h.01M15 12h.01M16.3 17.3a5.2 5.2 0 00-8.6 0"/></svg></span>Not for me</button>
     <button id="b-mid"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M9 15h6"/></svg></span>Either way</button>
-    <button class="go" id="b-go"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path class="f0" d="M9 10h.01M15 10h.01M8 14a4.5 4.5 0 008 0z"/><path class="f1" d="M7.3 10.2l1.7-1.7 1.7 1.7M13.3 10.2l1.7-1.7 1.7 1.7"/><path class="f1 fill" d="M7 13h10a5 5 0 01-10 0z"/></svg></span>Must go</button>
+    <button class="go" id="b-go"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path class="f0" d="M9 10h.01M15 10h.01M8 14a4.5 4.5 0 008 0z"/><path class="f1 fill star" d="M9.00 7.10 L9.73 8.99 L11.76 9.10 L10.19 10.39 L10.70 12.35 L9.00 11.25 L7.30 12.35 L7.81 10.39 L6.24 9.10 L8.27 8.99z M15.00 7.10 L15.73 8.99 L17.76 9.10 L16.19 10.39 L16.70 12.35 L15.00 11.25 L13.30 12.35 L13.81 10.39 L12.24 9.10 L14.27 8.99z"/><path class="f1 fill" d="M7 13.5h10a5 5 0 01-10 0z"/></svg></span>Must go</button>
   </div>
   <div class="hint skip" id="skiphint"><svg class="ic chev" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg><span>Swipe up for the next one</span></div>
 </section>
@@ -506,7 +507,7 @@ function postCard(pid,who,withCheck){const p=byId(pid);const r=el('div',(withChe
  return r;}
 function scrollBottom(){msgs.scrollTop=msgs.scrollHeight;}
 /* TikTok groups consecutive messages from one sender tightly (≈5pt) and separates senders (≈16pt) */
-new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.nodeType!==1)continue;const prev=n.previousElementSibling;if(prev&&(!n.dataset.who||prev.dataset.who!==n.dataset.who))n.classList.add('grp');}}).observe(msgs,{childList:true});
+new MutationObserver(ms=>{for(const m of ms)for(const n of m.addedNodes){if(n.nodeType!==1)continue;const prev=n.previousElementSibling;if(prev&&(!n.dataset.who||prev.dataset.who!==n.dataset.who))n.classList.add('grp');else if(prev&&n.dataset.who&&prev.dataset.who===n.dataset.who)prev.classList.add('noav');}}).observe(msgs,{childList:true});
 const SCRIPT=[
  {who:'maddie',text:'where are we eating sat 👀'},
  {who:'louis',post:'liam'},
@@ -552,7 +553,7 @@ function postCardSet(){const r=el('div','row me');const c=cardSetEl();state.card
 
 /* ---------- swipe ---------- */
 const deck=$('#deck');
-function startSwipe(){state.idx=0;state.votes={};renderDeck();show('swipe');setTimeout(playTop,60);if(!state.tutSeen){$('#tut').classList.add('show');state.tutTimer=setTimeout(hideTut,10000);}}
+function startSwipe(){state.idx=0;state.votes={};renderDeck();show('swipe');$('#skiphint').classList.remove('gone');setTimeout(playTop,60);if(!state.tutSeen){$('#tut').classList.add('show');state.tutTimer=setTimeout(hideTut,10000);}}
 function hideTut(){state.tutSeen=true;clearTimeout(state.tutTimer);$('#tut').classList.remove('show');}
 S.swipe.addEventListener('pointerdown',()=>{if($('#tut').classList.contains('show'))hideTut();},true);
 function cardEl(p,pos){const c=el('div','card'+(pos?' b'+pos:''));c.dataset.id=p.id;
@@ -568,20 +569,22 @@ function top(){return deck.querySelector('.card:not(.b1):not(.b2)');}
 function playTop(){deck.querySelectorAll('video').forEach(v=>{v.pause();});const c=top();if(!c)return;const v=c.querySelector('video');if(v){v.muted=true;v.onplay=()=>c.classList.remove('paused');v.onpause=()=>{if(c===top())c.classList.add('paused');};v.play().catch(()=>{c.classList.add('paused');v.addEventListener('canplay',()=>{if(c===top())v.play().catch(()=>{});},{once:true});});}const n=deck.querySelector('.card.b1 video');if(n)n.preload='auto';}
 function attachDrag(){const c=top();if(!c)return;playTop();
  c.onpointerdown=e=>{if(c.classList.contains('fly-right')||c.classList.contains('fly-left')||c.classList.contains('fly-down'))return;drag={x:e.clientX,y:e.clientY,dx:0,dy:0};c.setPointerCapture(e.pointerId);c.classList.add('dragging');};
- c.onpointermove=e=>{if(!drag)return;drag.dx=e.clientX-drag.x;drag.dy=e.clientY-drag.y;const up=drag.dy<-18&&Math.abs(drag.dy)>Math.abs(drag.dx)*1.2;const rot=up?0:drag.dx/14;c.style.transform=`translate(${up?drag.dx*0.3:drag.dx}px,${up?drag.dy:drag.dy*0.4}px) rotate(${rot}deg)`;$('#skiphint').classList.toggle('hot',up);
+ c.onpointermove=e=>{if(!drag)return;drag.dx=e.clientX-drag.x;drag.dy=e.clientY-drag.y;const up=drag.dy<-18&&Math.abs(drag.dy)>Math.abs(drag.dx);const rot=up?0:drag.dx/14;c.style.transform=`translate(${up?drag.dx*0.3:drag.dx}px,${up?drag.dy:drag.dy*0.4}px) rotate(${rot}deg)`;$('#skiphint').classList.toggle('hot',up);
   const g=c.querySelector('.stamp.go'),p=c.querySelector('.stamp.pass');const t=Math.min(1,Math.abs(drag.dx)/90);
-  if(drag.dx>18){g.classList.add('on');g.style.opacity=t;p.classList.remove('on');p.style.opacity='';c.classList.add('glow-go');c.classList.remove('glow-pass');c.style.setProperty('--g',t);c.style.setProperty('--b',0);setP($('#b-go'),t);setP($('#b-pass'),0);}
+  if(up){g.classList.remove('on');p.classList.remove('on');g.style.opacity='';p.style.opacity='';c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);c.style.setProperty('--b',0);resetBtns();}
+  else if(drag.dx>18){g.classList.add('on');g.style.opacity=t;p.classList.remove('on');p.style.opacity='';c.classList.add('glow-go');c.classList.remove('glow-pass');c.style.setProperty('--g',t);c.style.setProperty('--b',0);setP($('#b-go'),t);setP($('#b-pass'),0);}
   else if(drag.dx<-18){p.classList.add('on');p.style.opacity=t;g.classList.remove('on');g.style.opacity='';c.classList.add('glow-pass');c.classList.remove('glow-go');c.style.setProperty('--b',t);c.style.setProperty('--g',0);setP($('#b-pass'),t);setP($('#b-go'),0);}
   else{g.classList.remove('on');p.classList.remove('on');g.style.opacity='';p.style.opacity='';c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);c.style.setProperty('--b',0);resetBtns();}};
  c.onpointerup=c.onpointercancel=e=>{if(!drag)return;const dx=drag.dx,dy=drag.dy;drag=null;c.classList.remove('dragging');
   if(Math.abs(dx)<6&&Math.abs(dy)<6&&e.type==='pointerup'){const v=c.querySelector('video');if(v){v.paused?v.play().catch(()=>{}):v.pause();}}
   $('#skiphint').classList.remove('hot');
-  if(dy<-90&&Math.abs(dy)>Math.abs(dx)*1.2){skipCard();}else if(dx>100){vote(2);}else if(dx<-100){vote(0);}else{c.style.transform='';c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);c.style.setProperty('--b',0);resetBtns();}};}
+  const vertical=Math.abs(dy)>Math.abs(dx);
+  if(vertical&&dy<-70){skipCard();}else if(!vertical&&dx>100){vote(2);}else if(!vertical&&dx<-100){vote(0);}else{c.style.transform='';c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);c.style.setProperty('--b',0);resetBtns();}};}
 /* swipe up: decide later — the card flies up and goes to the back of the deck */
-async function skipCard(){const c=top();if(!c)return;c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');resetBtns();c.onpointerdown=null;c.classList.add('fly-up');
+async function skipCard(){const c=top();if(!c)return;$('#skiphint').classList.add('gone');c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');resetBtns();c.onpointerdown=null;c.classList.add('fly-up');
  const ids=state.deckIds;const [id]=ids.splice(state.idx,1);ids.push(id);await wait(320);renderDeck();}
 function sparkleBurst(c){for(let i=0;i<9;i++){const sp=el('i','sp burst',i%3?'✦':'✧');sp.style.left=(6+Math.random()*80)+'%';sp.style.top=(6+Math.random()*70)+'%';sp.style.fontSize=(10+Math.random()*14)+'px';sp.style.animationDelay=(Math.random()*.18)+'s';c.appendChild(sp);}}
-async function vote(v){const c=top();if(!c)return;const id=c.dataset.id;state.votes[id]=v;
+async function vote(v){const c=top();if(!c)return;$('#skiphint').classList.add('gone');const id=c.dataset.id;state.votes[id]=v;
  c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});
  if(v===2){c.classList.add('glow-go','go-commit');c.style.setProperty('--g',1);sparkleBurst(c);const bg=$('#b-go');setP(bg,1);bg.classList.remove('pop');void bg.offsetWidth;bg.classList.add('pop');setTimeout(()=>{bg.classList.remove('pop');resetBtns();},520);const g=c.querySelector('.stamp.go');g.classList.add('on');g.style.opacity=1;const st=$('#sticker');st.classList.remove('on');void st.offsetWidth;st.classList.add('on');await wait(260);c.classList.add('fly-right');setTimeout(()=>st.classList.remove('on'),500);}
  else if(v===0){c.classList.add('glow-pass');c.style.setProperty('--b',1);const bp=$('#b-pass');setP(bp,1);bp.classList.remove('pop');void bp.offsetWidth;bp.classList.add('pop');setTimeout(()=>{bp.classList.remove('pop');resetBtns();},520);const p=c.querySelector('.stamp.pass');p.classList.add('on');p.style.opacity=1;await wait(200);c.classList.add('fly-left');}
