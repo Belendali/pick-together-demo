@@ -195,12 +195,19 @@ img{display:block}
 .card .play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;display:none;pointer-events:none}
 .card.paused .play{display:block}
 /* first-time swipe tutorial (TikTok-style dim + white line-art hand) */
-.tut{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.6);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;pointer-events:none;opacity:0;transition:opacity .25s}
+.tut{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.62);display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;pointer-events:none;opacity:0;transition:opacity .25s}
 .tut.show{display:flex;opacity:1}
-.tut .hand{width:72px;height:72px;animation:tutswipe 2.4s ease-in-out infinite}
-.tut .arrows{display:flex;gap:120px;color:#fff;opacity:.9}.tut .arrows svg{width:22px;height:22px}
 .tut p{margin:0;font-size:16px;font-weight:600;line-height:1.4;text-align:center;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
-@keyframes tutswipe{0%,12%{transform:translateX(0) rotate(0)}38%,48%{transform:translateX(64px) rotate(14deg)}50%,62%{transform:translateX(0) rotate(0)}86%,96%{transform:translateX(-64px) rotate(-14deg)}100%{transform:translateX(0) rotate(0)}}
+/* tutorial scene: a ghost card and a pointing hand drag right (red) then left (blue) on a shared timeline */
+.tut .tscene{position:relative;width:220px;height:210px}
+.tut .tcard{position:absolute;left:50px;top:8px;width:120px;height:150px;border-radius:16px;border:2px solid rgba(255,255,255,.75);background:rgba(255,255,255,.06);transform-origin:50% 100%;animation:tutmove 3.6s cubic-bezier(.45,0,.25,1) infinite,tutglow 3.6s linear infinite}
+.tut .hg{position:absolute;left:86px;top:66px;width:64px;height:72px;animation:tutmove 3.6s cubic-bezier(.45,0,.25,1) infinite}
+.tut .hand{width:64px;height:72px;display:block;transform-origin:24px 10px;animation:tutpress 3.6s linear infinite}
+.tut .ring{position:absolute;left:24px;top:10px;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.18);opacity:0;animation:tutring 3.6s linear infinite}
+@keyframes tutmove{0%,10%{transform:translateX(0) rotate(0)}36%,42%{transform:translateX(74px) rotate(7deg)}52%,58%{transform:translateX(0) rotate(0)}84%,90%{transform:translateX(-74px) rotate(-7deg)}100%{transform:translateX(0) rotate(0)}}
+@keyframes tutglow{0%,12%,52%,60%,100%{border-color:rgba(255,255,255,.75);box-shadow:none}30%,44%{border-color:#f3355b;box-shadow:0 0 0 1px #f3355b,0 0 26px rgba(254,44,85,.8)}78%,92%{border-color:#54a0ff;box-shadow:0 0 0 1px #54a0ff,0 0 26px rgba(84,160,255,.8)}}
+@keyframes tutpress{0%,6%,46%,54%,94%,100%{transform:scale(1)}10%,42%,58%,90%{transform:scale(.93)}}
+@keyframes tutring{0%,6%{opacity:0;transform:scale(.4)}10%,42%{opacity:1;transform:scale(1)}46%,54%{opacity:0;transform:scale(.4)}58%,90%{opacity:1;transform:scale(1)}94%,100%{opacity:0;transform:scale(.4)}}
 .card .tx{position:absolute;left:18px;right:18px;bottom:22px;display:flex;flex-direction:column;gap:6px}
 .card .tx b{font-size:28px;font-weight:700;line-height:1.05}
 .card .tx span{font-size:13px;color:rgba(255,255,255,.8)}
@@ -420,7 +427,7 @@ img{display:block}
     <svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 10v6M12 7v.5"/></svg>
   </div>
   <div class="deck" id="deck"></div>
-  <div class="tut" id="tut"><div class="arrows"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div><svg class="hand" viewBox="0 0 56 62" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 32V10a4 4 0 118 0v16M24 22a4 4 0 118 0v8M32 26a4 4 0 118 0v8M40 30a4 4 0 118 0v10c0 10-6 18-16 18h-3c-6 0-10-3-13-8L4 38a4 4 0 016-5l6 6"/></svg><p>Swipe right for Must go,<br>left for Not for me</p></div>
+  <div class="tut" id="tut"><div class="tscene"><div class="tcard"></div><div class="hg"><div class="ring"></div><svg class="hand" viewBox="0 0 64 72" fill="rgba(0,0,0,.35)" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 36V12a4 4 0 018 0v20M28 30a4 4 0 018 0v6M36 32a4 4 0 018 0v6M44 34a3.5 3.5 0 017 0v9c0 11-7 19-17 19h-4c-6 0-10-3-13-8L9 42a4 4 0 017-4l4 5"/></svg></div></div><p>Swipe right for Must go,<br>left for Not for me</p></div>
   <div class="sticker" id="sticker">😋 MUST GO!</div>
   <div class="acts">
     <button class="pass" id="b-pass"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path class="f0" d="M9 10h.01M15 10h.01M15.5 15.5a5 5 0 00-7 0"/><path class="f1" d="M7 8.5l3.2 1.3M17 8.5l-3.2 1.3M9 12h.01M15 12h.01M16.3 17.3a5.2 5.2 0 00-8.6 0"/></svg></span>Not for me</button>
