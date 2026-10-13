@@ -81,7 +81,7 @@ img{display:block}
 .composer .plus img{width:29px;height:29px;display:block;transition:opacity .2s}
 .composer .plus .dot{position:absolute;right:-1px;top:-1px;width:10px;height:10px;border-radius:50%;background:var(--red);border:2px solid var(--bg);transform:scale(0);transition:transform .25s cubic-bezier(.2,.9,.3,1.4)}
 .composer .plus .dot.show{transform:scale(1)}
-.tooltip{position:absolute;right:12px;bottom:calc(92px + env(safe-area-inset-bottom,0px));background:#3b3b3d;color:#fff;border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.3;box-shadow:0 4px 12px rgba(0,0,0,.35);opacity:0;transform:translateY(6px);transition:all .3s;pointer-events:none}
+.tooltip{position:absolute;right:12px;bottom:calc(64px + env(safe-area-inset-bottom,0px));background:#3b3b3d;color:#fff;border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.3;box-shadow:0 4px 12px rgba(0,0,0,.35);opacity:0;transform:translateY(6px);transition:all .3s;pointer-events:none}
 .tooltip.show{opacity:1;transform:none}
 .tooltip::after{content:"";position:absolute;right:22px;bottom:-8px;border:9px solid transparent;border-top-color:#3b3b3d;border-bottom:0}
 
@@ -186,7 +186,15 @@ img{display:block}
 .card .who{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;background:rgba(20,20,22,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 4px;font-size:12px;font-weight:600}
 .card .who img{width:22px;height:22px;border-radius:50%}
 .card .cnt{position:absolute;right:12px;top:12px;background:rgba(20,20,22,.72);border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:12px;font-weight:600}
-.card .play{position:absolute;left:50%;top:40%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:rgba(0,0,0,.45);display:grid;place-items:center}
+.card .play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;display:none;pointer-events:none}
+.card.paused .play{display:block}
+/* first-time swipe tutorial (TikTok-style dim + white line-art hand) */
+.tut{position:absolute;inset:0;z-index:5;background:rgba(0,0,0,.6);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;pointer-events:none;opacity:0;transition:opacity .25s}
+.tut.show{display:flex;opacity:1}
+.tut .hand{width:72px;height:72px;animation:tutswipe 2.4s ease-in-out infinite}
+.tut .arrows{display:flex;gap:120px;color:#fff;opacity:.9}.tut .arrows svg{width:22px;height:22px}
+.tut p{margin:0;font-size:16px;font-weight:600;line-height:1.4;text-align:center;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+@keyframes tutswipe{0%,12%{transform:translateX(0) rotate(0)}38%,48%{transform:translateX(64px) rotate(14deg)}50%,62%{transform:translateX(0) rotate(0)}86%,96%{transform:translateX(-64px) rotate(-14deg)}100%{transform:translateX(0) rotate(0)}}
 .card .tx{position:absolute;left:18px;right:18px;bottom:22px;display:flex;flex-direction:column;gap:6px}
 .card .tx b{font-size:28px;font-weight:700;line-height:1.05}
 .card .tx span{font-size:13px;color:rgba(255,255,255,.8)}
@@ -394,6 +402,7 @@ img{display:block}
     <svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 10v6M12 7v.5"/></svg>
   </div>
   <div class="deck" id="deck"></div>
+  <div class="tut" id="tut"><div class="arrows"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div><svg class="hand" viewBox="0 0 56 62" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 32V10a4 4 0 118 0v16M24 22a4 4 0 118 0v8M32 26a4 4 0 118 0v8M40 30a4 4 0 118 0v10c0 10-6 18-16 18h-3c-6 0-10-3-13-8L4 38a4 4 0 016-5l6 6"/></svg><p>Swipe right for Let’s go,<br>left for Nope</p></div>
   <div class="sticker" id="sticker">😋 LET’S GO!</div>
   <div class="acts">
     <button id="b-pass"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M15.5 15.5a5 5 0 00-7 0"/></svg></span>Nope</button>
@@ -518,16 +527,18 @@ function postCardSet(){const r=el('div','row me');const c=cardSetEl();state.card
 
 /* ---------- swipe ---------- */
 const deck=$('#deck');
-function startSwipe(){state.idx=0;state.votes={};renderDeck();show('swipe');}
+function startSwipe(){state.idx=0;state.votes={};renderDeck();show('swipe');setTimeout(playTop,60);if(!state.tutSeen){$('#tut').classList.add('show');state.tutTimer=setTimeout(hideTut,10000);}}
+function hideTut(){state.tutSeen=true;clearTimeout(state.tutTimer);$('#tut').classList.remove('show');}
+S.swipe.addEventListener('pointerdown',()=>{if($('#tut').classList.contains('show'))hideTut();},true);
 function cardEl(p,pos){const c=el('div','card'+(pos?' b'+pos:''));c.dataset.id=p.id;
- c.innerHTML=`<video class="bg" src="${p.vid}" poster="${p.img}" muted loop playsinline preload="metadata"></video><div class="g"></div><div class="who"><img src="${AV[p.by]}" alt="">${NAME[p.by]}’s pick</div><div class="cnt">${state.idx+pos+1} / ${state.deckIds.length}</div><div class="play">${ICONS.play}</div>
+ c.innerHTML=`<video class="bg" src="${p.vid}" poster="${p.img}" muted loop playsinline preload="metadata"></video><div class="g"></div><div class="who"><img src="${AV[p.by]}" alt="">${NAME[p.by]}’s pick</div><div class="cnt">${state.idx+pos+1} / ${state.deckIds.length}</div><img class="play" src="ui/play.png" alt="">
  <div class="tx"><b>${p.name}</b><span>${p.meta} · ${p.open.toLowerCase()}</span><div class="tags">${p.tags.map(t=>'<i>'+t+'</i>').join('')}</div></div>
  <i class="sp" style="left:16%;top:14%">✦</i><i class="sp" style="left:78%;top:30%;font-size:14px">✦</i><i class="sp" style="left:24%;top:52%;font-size:12px">✧</i><div class="stamp go">LET’S GO</div><div class="stamp pass">NOPE</div><div class="stamp mid">SURE</div>`;return c;}
 function renderDeck(){deck.innerHTML='';const ids=state.deckIds;for(let k=2;k>=0;k--){const id=ids[state.idx+k];if(!id)continue;deck.appendChild(cardEl(byId(id),k));}
  $('#sw-cnt').textContent=(state.idx+1)+' of '+ids.length;attachDrag();}
 let drag=null;
 function top(){return deck.querySelector('.card:not(.b1):not(.b2)');}
-function playTop(){deck.querySelectorAll('video').forEach(v=>{v.pause();});const c=top();if(!c)return;const v=c.querySelector('video');if(v){v.muted=true;v.play().catch(()=>{});}const n=deck.querySelector('.card.b1 video');if(n)n.preload='auto';}
+function playTop(){deck.querySelectorAll('video').forEach(v=>{v.pause();});const c=top();if(!c)return;const v=c.querySelector('video');if(v){v.muted=true;v.onplay=()=>c.classList.remove('paused');v.onpause=()=>{if(c===top())c.classList.add('paused');};v.play().catch(()=>{c.classList.add('paused');v.addEventListener('canplay',()=>{if(c===top())v.play().catch(()=>{});},{once:true});});}const n=deck.querySelector('.card.b1 video');if(n)n.preload='auto';}
 function attachDrag(){const c=top();if(!c)return;playTop();
  c.onpointerdown=e=>{if(c.classList.contains('fly-right')||c.classList.contains('fly-left')||c.classList.contains('fly-down'))return;drag={x:e.clientX,y:e.clientY,dx:0,dy:0};c.setPointerCapture(e.pointerId);c.classList.add('dragging');};
  c.onpointermove=e=>{if(!drag)return;drag.dx=e.clientX-drag.x;drag.dy=e.clientY-drag.y;const rot=drag.dx/14;c.style.transform=`translate(${drag.dx}px,${drag.dy*0.4}px) rotate(${rot}deg)`;
@@ -535,7 +546,8 @@ function attachDrag(){const c=top();if(!c)return;playTop();
   if(drag.dx>18){g.classList.add('on');g.style.opacity=t;p.classList.remove('on');c.classList.add('glow-go');c.classList.remove('glow-pass');}
   else if(drag.dx<-18){p.classList.add('on');p.style.opacity=t;g.classList.remove('on');c.classList.add('glow-pass');c.classList.remove('glow-go');}
   else{g.classList.remove('on');p.classList.remove('on');c.classList.remove('glow-go','glow-pass');}};
- c.onpointerup=c.onpointercancel=e=>{if(!drag)return;const dx=drag.dx;drag=null;c.classList.remove('dragging');
+ c.onpointerup=c.onpointercancel=e=>{if(!drag)return;const dx=drag.dx,dy=drag.dy;drag=null;c.classList.remove('dragging');
+  if(Math.abs(dx)<6&&Math.abs(dy)<6&&e.type==='pointerup'){const v=c.querySelector('video');if(v){v.paused?v.play().catch(()=>{}):v.pause();}}
   if(dx>100){vote(2);}else if(dx<-100){vote(0);}else{c.style.transform='';c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');}};}
 async function vote(v){const c=top();if(!c)return;const id=c.dataset.id;state.votes[id]=v;
  c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});
