@@ -6,6 +6,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
 <title>Pick Together</title>
 <style>
 /* Layout: one phone-sized app; full-bleed on phones, framed on desktop. Dark single theme (TikTok). */
@@ -25,7 +27,7 @@ body{display:flex;align-items:center;justify-content:center}
 }
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 img{display:block}
-.screen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s;will-change:transform}
+.screen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;padding-top:calc(env(safe-area-inset-top,0px) + 8px);transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s;will-change:transform}
 .screen.off{transform:translateX(100%);opacity:0;pointer-events:none}
 .screen.off-left{transform:translateX(-18%);opacity:0;pointer-events:none}
 .screen.off-fade{opacity:0;pointer-events:none}
@@ -159,7 +161,7 @@ img{display:block}
 
 /* ---------- SWIPE ---------- */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:4px 16px;height:44px}
-.topbar .t{text-align:center;flex:1}
+.topbar .t{text-align:center;flex:1}.topbar .ttl{display:flex;align-items:center;justify-content:center;gap:8px}.topbar .ttl .avs span{width:20px;height:20px;border:2px solid #000;margin-left:-6px}.topbar .ttl .avs span:first-child{margin-left:0}
 .topbar .t b{display:block;font-size:15px;font-weight:600}
 .topbar .t span{font-size:11px;color:var(--fg3)}
 .presence{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--fg2);margin-top:-2px}
@@ -179,6 +181,7 @@ img{display:block}
 .card .tx span{font-size:13px;color:rgba(255,255,255,.8)}
 .card .tags{display:flex;gap:6px}
 .card .tags i{font-style:normal;font-size:11px;font-weight:600;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:4px}
+.card .sp{position:absolute;font-style:normal;font-size:18px;color:#fff;text-shadow:0 0 8px rgba(255,255,255,.9);opacity:.9;pointer-events:none}
 .card .stamp{position:absolute;top:56px;padding:8px 14px;border-radius:999px;font-weight:800;font-size:22px;letter-spacing:.5px;opacity:0;transform:scale(.6);transition:opacity .12s,transform .12s;box-shadow:0 6px 14px rgba(0,0,0,.4)}
 .card .stamp.go{right:16px;background:#fff;color:var(--red);transform:scale(.6) rotate(-12deg)}
 .card .stamp.pass{left:16px;background:#2b2b2e;color:#ddd;border:2px solid #777;transform:scale(.6) rotate(12deg)}
@@ -194,11 +197,11 @@ img{display:block}
 .card.fly-down{transform:translateY(60%) scale(.8)!important;opacity:0}
 .card.b1{transform:translateY(22px) scale(.95);filter:blur(1.5px);opacity:.85}
 .card.b2{transform:translateY(42px) scale(.9);filter:blur(4px);opacity:.5}
-.acts{display:flex;justify-content:center;gap:8px;padding:0 12px 6px;position:relative;z-index:2}
-.acts button{display:flex;align-items:center;gap:6px;padding:12px 16px;border-radius:999px;background:rgba(30,30,32,.96);font-size:14px;font-weight:600;white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,.4);transition:transform .12s}
+.acts{display:flex;justify-content:center;gap:34px;padding:0 12px 4px;position:relative;z-index:2}
+.acts button{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12px;color:var(--fg2);transition:transform .12s}.acts .cir{width:56px;height:56px;border-radius:50%;background:var(--chip);display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.4)}.acts .cir .ic{width:26px;height:26px}
 .acts button:active{transform:scale(.94)}
-.acts .mid{background:rgba(255,255,255,.08);border:1px solid var(--chip)}
-.acts .go{background:var(--red);padding:12px 22px}
+.acts .mid .cir{background:var(--chip)}
+.acts .go{color:#fff}.acts .go .cir{background:var(--red);box-shadow:0 0 0 6px rgba(254,44,85,.18),0 0 22px rgba(254,44,85,.6)}
 .hint{text-align:center;font-size:11px;color:var(--fg3);padding:4px 0 calc(16px + env(safe-area-inset-bottom,0px))}
 .sticker{position:absolute;left:28px;top:44px;display:flex;align-items:center;gap:8px;background:#fff;color:var(--red);font-weight:800;font-size:28px;padding:10px 18px 10px 14px;border-radius:999px;border:5px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.45);transform:rotate(-10deg) scale(1.6);opacity:0;pointer-events:none}
 .sticker.on{animation:stick .32s cubic-bezier(.2,.9,.3,1.3) forwards}
@@ -291,14 +294,15 @@ img{display:block}
 .replay{position:absolute;left:50%;bottom:calc(100px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#fff;color:#000;font-weight:600;font-size:13px;padding:10px 16px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s}
 .replay.show{opacity:1;pointer-events:auto}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.fshint{position:absolute;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:50;background:#3b3b3d;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.3;display:flex;gap:10px;align-items:center;box-shadow:0 6px 16px rgba(0,0,0,.5);transform:translateY(-140%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}.fshint.show{transform:none}.fshint b{font-weight:600}.fshint button{margin-left:auto;color:#aaa;font-size:18px;padding:0 4px}
 </style>
 </head>
 <body>
 <div id="app">
+<div class="fshint" id="fshint"><span>📱</span><span id="fshint-t"><b>Full screen:</b> tap Share → <b>Add to Home Screen</b>, then open it from there.</span><button id="fshint-x">×</button></div>
 
 <!-- ===================== CHAT ===================== -->
 <section class="screen" id="s-chat">
-  <div class="statusbar"><span>9:41</span><span class="sig">●●●● <span class="bat"></span></span></div>
   <div class="chat-head">
     <svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
     <img class="gav" src="img/av_group.jpg" alt="">
@@ -358,7 +362,6 @@ img{display:block}
 
 <!-- ===================== SELECT POSTS ===================== -->
 <section class="screen off" id="s-select">
-  <div class="statusbar"><span>9:41</span><span class="sig">●●●● <span class="bat"></span></span></div>
   <div class="sel-head">
     <button id="sel-x"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="t"><b>Pick places for the cards</b><span id="sel-sub">5 selected · from this chat</span></div>
@@ -373,26 +376,23 @@ img{display:block}
 
 <!-- ===================== SWIPE ===================== -->
 <section class="screen off" id="s-swipe">
-  <div class="statusbar"><span>9:41</span><span class="sig">●●●● <span class="bat"></span></span></div>
   <div class="topbar">
     <button id="sw-x"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <div class="t"><b>Where are we eating Sat?</b><span id="sw-cnt">1 of 5</span></div>
+    <div class="t ttl"><b>Pick Together</b><div class="avs"><span><img src="img/av_maddie.jpg" alt=""></span><span><img src="img/av_louis.jpg" alt=""></span><span><img src="img/av_awesun.jpg" alt=""></span><span><img src="img/av_sam.jpg" alt=""></span></div><span id="sw-cnt" hidden>1 of 5</span></div>
     <svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 10v6M12 7v.5"/></svg>
   </div>
-  <div class="presence"><div class="avs"><span><img src="img/av_maddie.jpg" alt=""><i></i></span><span><img src="img/av_louis.jpg" alt=""><i></i></span><span><img src="img/av_awesun.jpg" alt=""><i></i></span><span><img src="img/av_sam.jpg" alt=""><i></i></span></div>4 in the room with you</div>
   <div class="deck" id="deck"></div>
-  <div class="sticker" id="sticker">😋 MUST GO!</div>
+  <div class="sticker" id="sticker">😋 LET’S GO!</div>
   <div class="acts">
-    <button id="b-pass"><svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Pass</button>
-    <button class="mid" id="b-mid"><svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M6 12h12"/></svg>Either way</button>
-    <button class="go" id="b-go"><svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.5-7 10-7 10z"/></svg>Must go</button>
+    <button id="b-pass"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M15.5 15.5a5 5 0 00-7 0"/></svg></span>Nope</button>
+    <button id="b-mid"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M9 15h6"/></svg></span>Sure</button>
+    <button class="go" id="b-go"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M8 14a4.5 4.5 0 008 0z"/></svg></span>Let’s go!</button>
   </div>
-  <div class="hint">Swipe right = Must go · left = Pass · votes stay private until it closes</div>
+  <div class="hint">Swipe right = Let’s go · left = Nope · tap Sure · votes stay private</div>
 </section>
 
 <!-- ===================== WAITING ===================== -->
 <section class="screen off" id="s-wait">
-  <div class="statusbar"><span>9:41</span><span class="sig">●●●● <span class="bat"></span></span></div>
   <div class="topbar">
     <button id="wt-x"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="t"><b>Where are we eating Sat?</b></div><span style="width:24px"></span>
@@ -403,14 +403,13 @@ img{display:block}
     <div class="sub" id="wt-sub">1 of 5 picked · waiting for the others</div>
     <div class="room" id="room"></div>
     <div class="count"><svg class="ic" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 7v5l3 2"/></svg><span id="wt-count">Everyone’s in within <b>5</b>s</span></div>
-    <div class="mine"><div class="l">🔥 YOUR MUST GO <span>· sealed until it closes</span></div><div class="r" id="mine"></div></div>
+    <div class="mine"><div class="l">😄 YOUR LET’S GO <span>· sealed until it closes</span></div><div class="r" id="mine"></div></div>
   </div>
   <div class="wait-foot"><span id="wt-foot">We’ll ping the chat the moment everyone’s in</span></div>
 </section>
 
 <!-- ===================== RESULTS ===================== -->
 <section class="screen off" id="s-res">
-  <div class="statusbar"><span>9:41</span><span class="sig">●●●● <span class="bat"></span></span></div>
   <div class="topbar">
     <button id="rs-x"><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="t"><b>Results</b></div><span style="width:24px"></span>
@@ -459,7 +458,7 @@ function avatar(who){const i=el('img','av');i.src=AV[who];i.alt='';return i;}
 function bubble(who,text){const r=el('div','row'+(who==='me'?' me':''));if(who!=='me')r.appendChild(avatar(who));r.appendChild(el('div','bub',text));return r;}
 function postCard(pid,who,withCheck){const p=byId(pid);const r=el('div',(withCheck?'selp on':'row')+(who==='me'?' me':''));if(who!=='me'){r.appendChild(avatar(who));}
  const c=el('div','post');c.innerHTML=`<div class="im"><img src="${p.img}" alt=""><div class="play">${ICONS.play}</div><div class="cap"><img src="${AV[who]}" alt="">${p.cap}</div></div><div class="pl"><span class="pin">${ICONS.pin}</span>${p.name}</div>`;r.appendChild(c);
- if(!withCheck){const f=el('div','fwd',ICONS.fwd);r.appendChild(f);} else {const ck=el('div','ck',ICONS.check);ck.style[who==='me'?'right':'left']=(who==='me'?'8px':'42px');r.appendChild(ck);r.dataset.pid=pid;}
+ if(!withCheck){const f=el('div','fwd',ICONS.fwd);r.appendChild(f);} else {const ck=el('div','ck',ICONS.check);ck.style.left=(who==='me'?'calc(100% - 118px)':'160px');r.appendChild(ck);r.dataset.pid=pid;}
  return r;}
 function scrollBottom(){msgs.scrollTop=msgs.scrollHeight;}
 const SCRIPT=[
@@ -475,7 +474,7 @@ const SCRIPT=[
  {who:'me',text:'guys. pick ONE.'}
 ];
 async function playChat(){msgs.innerHTML='';for(const m of SCRIPT){await wait(m.post?900:650);msgs.appendChild(m.post?postCard(m.post,m.who):bubble(m.who,m.text));scrollBottom();}
- await wait(700);openSheet();}
+ await wait(600);$('#reddot').classList.add('show');$('#tip').classList.add('show');}
 function openSheet(){$('#dim1').classList.add('show');$('#halfsheet').classList.add('show');}
 function closeSheet(){$('#dim1').classList.remove('show');$('#halfsheet').classList.remove('show');}
 $('#sheet-x').onclick=()=>{closeSheet();state.sheetClosed=true;setTimeout(()=>{$('#reddot').classList.add('show');$('#tip').classList.add('show');},350);};
@@ -487,8 +486,8 @@ $('#menu-pick').onclick=()=>{togglePlus(false);$('#reddot').classList.remove('sh
 
 /* ---------- select ---------- */
 function openSelect(){const list=$('#sel-list');list.innerHTML='';state.selected=P.map(p=>p.id);
- for(const m of SCRIPT){if(!m.post)continue;const r=postCard(m.post,m.who,true);r.onclick=()=>{const on=r.classList.toggle('on');const id=r.dataset.pid;if(on){if(!state.selected.includes(id))state.selected.push(id);}else{state.selected=state.selected.filter(x=>x!==id);}updateSel();};list.appendChild(r);}
- const note=el('div','sys','Messages are hidden · only shared posts with a place');list.appendChild(note);updateSel();show('select');}
+ for(const m of SCRIPT){if(!m.post){const b=bubble(m.who,m.text);b.style.opacity='.3';b.style.animation='none';list.appendChild(b);continue;}const r=postCard(m.post,m.who,true);r.onclick=()=>{const on=r.classList.toggle('on');const id=r.dataset.pid;if(on){if(!state.selected.includes(id))state.selected.push(id);}else{state.selected=state.selected.filter(x=>x!==id);}updateSel();};list.appendChild(r);}
+ updateSel();show('select');}
 function updateSel(){const n=state.selected.length;$('#sel-sub').textContent=n+' selected · from this chat';$('#sel-send-t').textContent='Send decision cards · '+n;const t=$('#sel-thumbs');t.innerHTML='';P.filter(p=>state.selected.includes(p.id)).forEach(p=>{const i=el('img');i.src=p.img;i.alt='';t.appendChild(i);});$('#sel-send').style.opacity=n>=2?'1':'.4';}
 $('#sel-all').onclick=()=>{document.querySelectorAll('#sel-list .selp').forEach(r=>r.classList.add('on'));state.selected=P.map(p=>p.id);updateSel();};
 $('#sel-x').onclick=()=>show('chat');
@@ -508,7 +507,7 @@ function startSwipe(){state.idx=0;state.votes={};renderDeck();show('swipe');}
 function cardEl(p,pos){const c=el('div','card'+(pos?' b'+pos:''));c.dataset.id=p.id;
  c.innerHTML=`<video class="bg" src="${p.vid}" poster="${p.img}" muted loop playsinline preload="metadata"></video><div class="g"></div><div class="who"><img src="${AV[p.by]}" alt="">${NAME[p.by]}’s pick</div><div class="cnt">${state.idx+pos+1} / ${state.deckIds.length}</div><div class="play">${ICONS.play}</div>
  <div class="tx"><b>${p.name}</b><span>${p.meta} · ${p.open.toLowerCase()}</span><div class="tags">${p.tags.map(t=>'<i>'+t+'</i>').join('')}</div></div>
- <div class="stamp go">MUST GO</div><div class="stamp pass">PASS</div><div class="stamp mid">EITHER WAY</div>`;return c;}
+ <i class="sp" style="left:16%;top:14%">✦</i><i class="sp" style="left:78%;top:30%;font-size:14px">✦</i><i class="sp" style="left:24%;top:52%;font-size:12px">✧</i><div class="stamp go">LET’S GO</div><div class="stamp pass">NOPE</div><div class="stamp mid">SURE</div>`;return c;}
 function renderDeck(){deck.innerHTML='';const ids=state.deckIds;for(let k=2;k>=0;k--){const id=ids[state.idx+k];if(!id)continue;deck.appendChild(cardEl(byId(id),k));}
  $('#sw-cnt').textContent=(state.idx+1)+' of '+ids.length;attachDrag();}
 let drag=null;
@@ -545,7 +544,7 @@ function startWait(){const room=$('#room');room.innerHTML='';const cx=150,cy=140
  ORDER.forEach((w,i)=>{const a=-Math.PI/2+i*(Math.PI*2/5);const m=el('div','mem '+(w==='me'?'done':'idle'));m.dataset.w=w;m.style.left=Math.round(cx+R*Math.cos(a)-48)+'px';m.style.top=Math.round(cy+R*Math.sin(a)-40)+'px';
   m.innerHTML=`<div class="a"><img src="${AV[w]}" alt=""><div class="ring"></div><div class="ck">${ICONS.check}</div></div><b>${NAME[w]}</b><span>${w==='me'?'Picked':'Hasn’t started'}</span>`;room.appendChild(m);});
  const mine=$('#mine');mine.innerHTML='';const must=state.deckIds.filter(id=>state.votes[id]===2);must.slice(0,3).forEach(id=>{const i=el('img');i.src=byId(id).img;i.alt='';mine.appendChild(i);});
- const rest=state.deckIds.length-must.length;if(rest>0)mine.appendChild(el('div','',`+${rest}<br>either<br>way`));
+ const rest=state.deckIds.length-must.length;if(rest>0)mine.appendChild(el('div','',`+${rest}<br>sure`));
  if(!must.length)mine.innerHTML='<div style="width:100%;border:0;text-align:left">No must-gos — everything counts as “either way”</div>';
  $('#wt-sub').textContent='1 of 5 picked · waiting for the others';
  // update chat card set
@@ -576,7 +575,7 @@ async function startResults(){const rows=tally();const [A,B]=rows;const res=$('#
   <div class="arena"><img class="tc a" src="${byId(A.id).img}" alt=""><img class="tc b" src="${byId(B.id).img}" alt=""><div class="vs">VS</div><div class="winbadge">WINNER</div></div>
   <div class="chip" id="chip">🎲 TikTok is choosing<span class="dots"><i></i><i></i><i></i></span></div></div>
   <div class="lh"><b>Everyone’s votes</b><span>5 of 5 picked</span></div>${rowsHtml(rows,[A.id,B.id])}
-  <div class="legend"><span>🔥 Must go +2</span><span>🤷 Either way +1</span><span>🙅 Pass 0</span></div>`;
+  <div class="legend"><span>😄 Let’s go +2</span><span>🙂 Sure +1</span><span>🙁 Nope 0</span></div>`;
  requestAnimationFrame(()=>res.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'px'));
  const tie=$('#tie');await wait(150);tie.classList.add('in');await wait(900);tie.classList.add('shuffle');await wait(3100);tie.classList.remove('shuffle');
  const win=Math.random()<0.5?A:B;state.winner=win;const wc=tie.querySelector(win===A?'.tc.a':'.tc.b'),lc=tie.querySelector(win===A?'.tc.b':'.tc.a');
@@ -584,19 +583,19 @@ async function startResults(){const rows=tally();const [A,B]=rows;const res=$('#
  $('#chip').innerHTML='🎉 '+byId(win.id).name+' it is';$('#tie-h').textContent='TikTok picked';tie.querySelector('.sub').textContent='Tied at '+A.pts+' pts · settled with a little animation';confetti();await wait(1800);finalResult(rows,win);}
 function confetti(){const c=$('#conf');const cols=['#fe2c55','#25f4ee','#fff','#3bd27a','#ffd166'];for(let i=0;i<40;i++){const p=el('i');p.style.left=Math.random()*100+'%';p.style.background=cols[i%cols.length];p.style.animationDelay=(Math.random()*.5)+'s';p.style.animationDuration=(1.2+Math.random()*.8)+'s';c.appendChild(p);}}
 function finalResult(rows,win){const p=byId(win.id);const res=$('#res');res.style.transition='opacity .25s';res.style.opacity=0;setTimeout(()=>{res.innerHTML=`<div class="hero"><video src="${p.vid}" poster="${p.img}" muted loop playsinline autoplay></video><div class="g"></div><div class="wb">${ICONS.check} WINNER</div>
-  <div class="t"><b>${p.name} 🎉</b><span>${p.meta}<br>${p.open} · Reservations via Resy</span><div class="v">${avs(win.voters,22)}${win.must} Must go · ${win.either} Either way · ${win.pts} pts</div></div></div>
+  <div class="t"><b>${p.name} 🎉</b><span>${p.meta}<br>${p.open} · Reservations via Resy</span><div class="v">${avs(win.voters,22)}${win.must} Let’s go · ${win.either} Sure · ${win.pts} pts</div></div></div>
   <div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>
   <div class="lh"><b>Everyone’s votes</b><span>5 of 5 picked · tie broken by TikTok</span></div>${rowsHtml(rows.filter(r=>r.id!==win.id),[])}
-  <div class="legend"><span>🔥 Must go +2</span><span>🤷 Either way +1</span><span>🙅 Pass 0</span></div>`;
+  <div class="legend"><span>😄 Let’s go +2</span><span>🙂 Sure +1</span><span>🙁 Nope 0</span></div>`;
   res.style.transition='opacity .35s';requestAnimationFrame(()=>{res.style.opacity=1;});requestAnimationFrame(()=>res.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'px'));
   res.querySelectorAll('.btn').forEach(b=>b.onclick=()=>b.textContent=b.textContent.includes('Directions')?'Opens Maps ↗':'Opens Resy ↗');},260);}
 $('#rs-x').onclick=()=>closeToChat();
 
 /* ---------- back in chat ---------- */
 async function closeToChat(){show('chat');const win=state.winner;const p=byId(win.id);
- if(state.cardsetEl){const c=state.cardsetEl;c.classList.add('win');c.querySelector('.h .ic2').innerHTML=ICONS.check;c.querySelector('.h span').textContent='Decided · 5 of 5 · tie broken by TikTok';c.querySelector('.stack').outerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">WINNER</div><div class="t"><b>${p.name} 🎉</b><span>${win.must} Must go · ${win.either} Either way · ${p.meta.split(' · ').slice(0,2).join(' · ')}</span></div></div>`;c.querySelector('.st').remove();c.querySelector('.btn').outerHTML=`<div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>`;}
+ if(state.cardsetEl){const c=state.cardsetEl;c.classList.add('win');c.querySelector('.h .ic2').innerHTML=ICONS.check;c.querySelector('.h span').textContent='Decided · 5 of 5 · tie broken by TikTok';c.querySelector('.stack').outerHTML=`<div class="hero"><img src="${p.img}" alt=""><div class="g"></div><div class="wb">WINNER</div><div class="t"><b>${p.name} 🎉</b><span>${win.must} Let’s go · ${win.either} Sure · ${p.meta.split(' · ').slice(0,2).join(' · ')}</span></div></div>`;c.querySelector('.st').remove();c.querySelector('.btn').outerHTML=`<div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>`;}
  msgs.appendChild(el('div','sys','Tie between the top two · TikTok picked 🎲'));scrollBottom();
- const after=[['maddie','FINALLY 😭 that took one minute'],['louis',p.name.toLowerCase()+' it is. sat 7?'],['me','checked resy — 7pm has a table for 5, booked ✓'],['awesun','perfect, see you sat 🙌'],['sam',p.id==='lisa'?'fine but thai market next week 🍜':'fine but pho 778 next week 🍜'],['louis','see you all there 👋']];
+ const after=[['maddie','FINALLY 😭 that took one minute'],['louis','ok '+p.name.toLowerCase()+' it is. sat 7?'],['me','checked resy — 7pm has a table for 5, booked ✓'],['awesun','7 works. finishing my makeup and heading out'],['sam',p.id==='lisa'?'fine but thai market next week 🍜':'fine but pho 778 next week 🍜'],['me','deal. see you all there 👋']];
  for(const [w,t] of after){await wait(900);msgs.appendChild(bubble(w,t));scrollBottom();}
  await wait(800);$('#replay').classList.add('show');}
 $('#replay').onclick=()=>{$('#replay').classList.remove('show');$('#reddot').classList.remove('show');$('#tip').classList.remove('show');boot();};
@@ -604,6 +603,9 @@ $('#replay').onclick=()=>{$('#replay').classList.remove('show');$('#reddot').cla
 /* ---------- boot ---------- */
 function boot(){reset();show('chat');playChat();}
 boot();
+/* full-screen hint (only when not installed) */
+(function(){const standalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;if(standalone)return;const ios=/iPhone|iPad|iPod/.test(navigator.userAgent);const h=$('#fshint');if(!ios){$('#fshint-t').innerHTML='<b>Full screen:</b> tap once to go full screen, or add to Home screen from the ⋮ menu.';const go=()=>{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{});document.removeEventListener('pointerdown',go);};document.addEventListener('pointerdown',go);}
+setTimeout(()=>h.classList.add('show'),1200);const hide=()=>h.classList.remove('show');$('#fshint-x').onclick=hide;setTimeout(hide,9000);})();
 })();
 </script>
 </body>
