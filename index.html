@@ -252,8 +252,8 @@ img{display:block}
 .acts button:active .cir{transform:scale(.94)}
 .acts .go{--c:var(--red)}.acts .go .cir{transform:scale(calc(1 + .3*var(--p))) rotate(calc(6deg*var(--p)));box-shadow:0 4px 10px rgba(0,0,0,.4),0 0 0 calc(6px*var(--p)) rgba(254,44,85,.22),0 0 calc(30px*var(--p)) rgba(254,44,85,.85)}
 .acts .pass{--c:var(--blue)}.acts .pass .cir{transform:scale(calc(1 + .24*var(--p))) rotate(calc(-10deg*var(--p)));box-shadow:0 4px 10px rgba(0,0,0,.4),0 0 0 calc(6px*var(--p)) rgba(84,160,255,.22),0 0 calc(28px*var(--p)) rgba(84,160,255,.85)}
-.acts .go.pop .cir{animation:gopop .5s cubic-bezier(.2,.9,.3,1.3)}@keyframes gopop{0%{transform:scale(1)}40%{transform:scale(1.45) rotate(8deg)}100%{transform:scale(1)}}
-.acts .pass.pop .cir{animation:passpop .5s ease-out}@keyframes passpop{0%{transform:scale(1)}30%{transform:scale(1.3) rotate(-14deg)}55%{transform:scale(1.25) rotate(10deg)}75%{transform:scale(1.2) rotate(-6deg)}100%{transform:scale(1)}}
+.acts .go.pop .cir{animation:gopop .55s ease-out}@keyframes gopop{30%{transform:scale(1.42) rotate(12deg)}55%{transform:scale(1.36) rotate(-9deg)}78%{transform:scale(1.3) rotate(5deg)}}
+.acts .pass.pop .cir{animation:passpop .55s ease-out}@keyframes passpop{30%{transform:scale(1.3) rotate(-14deg)}55%{transform:scale(1.25) rotate(10deg)}78%{transform:scale(1.22) rotate(-6deg)}}
 .hint{text-align:center;font-size:11px;color:var(--fg3);padding:4px 0 calc(16px + env(safe-area-inset-bottom,0px))}
 .hint.skip{display:flex;flex-direction:column;align-items:center;gap:2px;color:rgba(255,255,255,.6);transition:color .15s}.hint.skip .chev{width:16px;height:16px;animation:nudge 1.6s ease-in-out infinite}.hint.skip.hot{color:#fff}.hint.skip.gone{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s .3s}.hint.skip.gone .chev{animation:none}.hint.skip.gone span{visibility:hidden} /* iOS: also kill the animated child so the fade is honoured */
 .card.fly-up{transform:translateY(-130%) scale(.9) rotate(0)!important;opacity:0}
@@ -301,14 +301,14 @@ img{display:block}
 /* tie-break: two cards on opposite sides of a 3D ring that spins around the vertical axis, then settles on the winner */
 .arena{position:relative;width:300px;height:224px;perspective:720px;perspective-origin:50% 45%;transition:height .5s cubic-bezier(.2,.8,.2,1)}
 .tie.pick .arena{height:192px}
-.ring{position:absolute;left:50%;top:28px;width:0;height:0;transform-style:preserve-3d;transform:rotateY(-90deg);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
-.tie.in .ring{transform:rotateY(0)}
+.ring3d{position:absolute;left:50%;top:28px;width:0;height:0;transform-style:preserve-3d;transform:rotateY(-90deg);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.tie.in .ring3d{transform:rotateY(0)}
 .tc{position:absolute;left:-60px;top:0;width:120px;height:150px;border-radius:14px;object-fit:cover;border:2px solid rgba(255,255,255,.5);box-shadow:0 10px 24px rgba(0,0,0,.55);backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .55s cubic-bezier(.3,.9,.3,1.1),opacity .4s,filter .4s,border-color .3s,box-shadow .3s}
 .tc.front{transform:rotateY(0) translateZ(84px)}
 .tc.back{transform:rotateY(180deg) translateZ(84px)}
 .tie.in:not(.spinning):not(.pick) .tc.a{transform:translateX(-74px) rotate(-5deg)}
 .tie.in:not(.spinning):not(.pick) .tc.b{transform:translateX(74px) rotate(5deg)}
-.ring.nt .tc{transition:none}
+.ring3d.nt .tc{transition:none}
 .tie.pick .tc.lose{opacity:.45;filter:grayscale(1);transform:rotateY(0) translateX(-108px) translateZ(-70px) translateY(4px) scale(.8)}
 .vs{position:absolute;left:50%;top:78px;width:44px;height:44px;margin-left:-22px;border-radius:50%;background:#fff;color:#000;display:grid;place-items:center;font-weight:800;font-size:14px;box-shadow:0 6px 16px rgba(0,0,0,.5);opacity:0;transform:scale(.4);transition:opacity .3s,transform .35s cubic-bezier(.2,.9,.3,1.5);z-index:5}
 .tie.in .vs{opacity:1;transform:scale(1)}
@@ -334,7 +334,7 @@ img{display:block}
 .hero .t .v .avs span{border-color:#000}
 .two{display:flex;gap:8px;margin-top:12px}
 .two .btn{height:46px;font-size:15px}
-.btn.backchat{margin-top:10px;height:46px;font-size:15px}
+.btn.backchat{margin-top:18px;height:46px;font-size:15px}
 .lh{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--fg2);margin:18px 0 4px}
 .lh b{color:#fff;font-weight:600}
 .rrow{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
@@ -657,7 +657,7 @@ function avs(list,sz){return `<div class="avs">${list.map(w=>`<span${sz?` style=
 function rowsHtml(rows,hlIds){return rows.map((r,i)=>{const p=byId(r.id);const hl=hlIds.includes(r.id);return `<div class="rrow${hl?' hl':''}"><span class="n">${i+1}</span><img class="th" src="${p.img}" alt=""><div class="c"><b>${p.name}</b><div class="bar"><i data-w="${Math.max(6,r.pts/10*150)}"></i></div></div>${avs(r.voters,20)}<span class="pts">${r.pts} pts</span></div>`;}).join('');}
 async function startResults(){const rows=tally();const [A,B]=rows;const res=$('#res');show('res');
  res.innerHTML=`<div class="tie" id="tie"><div class="confetti" id="conf"></div><h2 id="tie-h">It’s a tie!</h2><div class="sub">${A.pts} pts each · nobody has to be the bad guy</div>
-  <div class="arena"><div class="ring" id="ring"><img class="tc a front" src="${byId(A.id).img}" alt=""><img class="tc b back" src="${byId(B.id).img}" alt=""></div><div class="vs">VS</div><div class="winbadge">WINNER</div></div>
+  <div class="arena"><div class="ring3d" id="ring"><img class="tc a front" src="${byId(A.id).img}" alt=""><img class="tc b back" src="${byId(B.id).img}" alt=""></div><div class="vs">VS</div><div class="winbadge">WINNER</div></div>
   <div class="chip" id="chip">🎲 TikTok is choosing<span class="dots"><i></i><i></i><i></i></span></div></div>
   <div class="lh"><b>Everyone’s votes</b><span>5 of 5 picked</span></div>${rowsHtml(rows,[A.id,B.id])}`;
  requestAnimationFrame(()=>res.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'px'));
@@ -674,8 +674,8 @@ function confetti(){const c=$('#conf');const cols=['#fe2c55','#25f4ee','#fff','#
 function finalResult(rows,win){const p=byId(win.id);const res=$('#res');res.style.transition='opacity .25s';res.style.opacity=0;setTimeout(()=>{res.innerHTML=`<div class="hero"><video src="${p.vid}" poster="${p.img}" muted loop playsinline autoplay></video><div class="g"></div><div class="wb">${ICONS.check} WINNER</div>
   <div class="t"><b>${p.name} 🎉</b><span>${p.meta}<br>${p.open} · Reservations via Resy</span><div class="v">${avs(win.voters,22)}${win.must} Must go · ${win.either} Either way · ${win.pts} pts</div></div></div>
   <div class="two"><button class="btn white">${ICONS.nav}Directions</button><button class="btn ghost">${ICONS.ext}Book a table</button></div>
-  <button class="btn ghost backchat" id="rs-back">Back to chat</button>
-  <div class="lh"><b>Everyone’s votes</b><span>5 of 5 picked</span></div>${rowsHtml(rows.filter(r=>r.id!==win.id),[])}`;
+  <div class="lh"><b>Everyone’s votes</b><span>5 of 5 picked</span></div>${rowsHtml(rows.filter(r=>r.id!==win.id),[])}
+  <button class="btn ghost backchat" id="rs-back">Back to chat</button>`;
   res.style.transition='opacity .35s';requestAnimationFrame(()=>{res.style.opacity=1;});requestAnimationFrame(()=>res.querySelectorAll('.bar i').forEach(i=>i.style.width=i.dataset.w+'px'));
   res.querySelectorAll('.btn').forEach(b=>b.onclick=()=>b.textContent=b.textContent.includes('Directions')?'Opens Maps ↗':'Opens Resy ↗');},260);}
 $('#rs-x').onclick=()=>closeToChat();
