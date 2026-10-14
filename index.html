@@ -209,22 +209,22 @@ img{display:block}
 .tut p{margin:0;font-size:16px;font-weight:600;line-height:1.4;text-align:center;color:#fff;background:rgba(20,20,22,.85);padding:10px 18px;border-radius:14px}
 /* tutorial scene: a ghost card and a pointing hand drag right (red) then left (blue) on a shared timeline */
 .tut .tscene{position:relative;width:320px;height:210px}
-.tut .arr{position:absolute;top:72px;width:18px;height:18px;color:#fff;opacity:.35;animation:3.6s ease-in-out infinite}.tut .arr.l{left:-8px;animation-name:arrL}.tut .arr.r{right:-8px;animation-name:arrR}
-@keyframes arrR{0%,10%,52%,100%{opacity:.35;transform:translateX(0)}30%,42%{opacity:1;transform:translateX(5px)}}@keyframes arrL{0%,58%,100%{opacity:.35;transform:translateX(0)}78%,90%{opacity:1;transform:translateX(-5px)}}
-.tut .tcard{position:absolute;left:100px;top:8px;width:120px;height:150px;border-radius:16px;border:2px solid rgba(255,255,255,.75);background:rgba(255,255,255,.06);transform-origin:50% 100%;animation:tutmove 3.6s cubic-bezier(.45,0,.25,1) infinite,tutglow 3.6s linear infinite}
-.tut .hg{position:absolute;left:136px;top:66px;width:64px;height:72px;animation:tutmove 3.6s cubic-bezier(.45,0,.25,1) infinite}
-.tut .hand{width:64px;height:72px;display:block;transform-origin:24px 10px;animation:tutpress 3.6s linear infinite}
-.tut .ring{position:absolute;left:24px;top:10px;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:rgba(255,255,255,.38);box-shadow:0 0 14px rgba(255,255,255,.35);opacity:0;animation:tutring 3.6s linear infinite}
-@keyframes tutmove{0%,10%{transform:translateX(0) rotate(0)}36%,42%{transform:translateX(58px) rotate(6deg)}52%,58%{transform:translateX(0) rotate(0)}84%,90%{transform:translateX(-58px) rotate(-6deg)}100%{transform:translateX(0) rotate(0)}}
-@keyframes tutglow{0%,12%,52%,60%,100%{border-color:rgba(255,255,255,.75);box-shadow:none}30%,44%{border-color:#f3355b;box-shadow:0 0 0 1px #f3355b,0 0 26px rgba(254,44,85,.8)}78%,92%{border-color:#54a0ff;box-shadow:0 0 0 1px #54a0ff,0 0 26px rgba(84,160,255,.8)}}
-@keyframes tutpress{0%,6%,46%,54%,94%,100%{transform:scale(1)}10%,42%,58%,90%{transform:scale(.93)}}
-@keyframes tutring{0%,6%{opacity:0;transform:scale(.4)}10%,42%{opacity:1;transform:scale(1)}46%,54%{opacity:0;transform:scale(.4)}58%,90%{opacity:1;transform:scale(1)}94%,100%{opacity:0;transform:scale(.4)}}
+.tut .arr{position:absolute;top:72px;width:18px;height:18px;color:#fff;opacity:.35;animation:5.4s ease-in-out infinite}.tut .arr.d{top:auto;bottom:-2px;left:151px;animation-name:arrD}.tut .arr.l{left:-8px;animation-name:arrL}.tut .arr.r{right:-8px;animation-name:arrR}
+@keyframes arrR{0%,7%,35%,100%{opacity:.35;transform:translateX(0)}20%,28%{opacity:1;transform:translateX(5px)}}@keyframes arrL{0%,39%,67%,100%{opacity:.35;transform:translateX(0)}52%,60%{opacity:1;transform:translateX(-5px)}}@keyframes arrD{0%,71%,100%{opacity:.35;transform:translateY(0)}84%,92%{opacity:1;transform:translateY(5px)}}
+.tut .tcard{position:absolute;left:100px;top:8px;width:120px;height:150px;border-radius:16px;border:2px solid rgba(255,255,255,.75);background:rgba(255,255,255,.06);transform-origin:50% 100%;animation:tutmove 5.4s cubic-bezier(.45,0,.25,1) infinite,tutglow 5.4s linear infinite}
+.tut .hg{position:absolute;left:136px;top:66px;width:64px;height:72px;animation:tutmove 5.4s cubic-bezier(.45,0,.25,1) infinite}
+.tut .hand{width:64px;height:72px;display:block;transform-origin:24px 10px;animation:tutpress 5.4s linear infinite}
+.tut .ring{position:absolute;left:24px;top:10px;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:rgba(255,255,255,.38);box-shadow:0 0 14px rgba(255,255,255,.35);opacity:0;animation:tutring 5.4s linear infinite}
+@keyframes tutmove{0%,7%{transform:translate(0,0) rotate(0)}24%,28%{transform:translate(58px,0) rotate(6deg)}35%,39%{transform:translate(0,0) rotate(0)}56%,60%{transform:translate(-58px,0) rotate(-6deg)}67%,71%{transform:translate(0,0) rotate(0)}88%,92%{transform:translate(0,34px) rotate(0)}100%{transform:translate(0,0) rotate(0)}}
+@keyframes tutglow{0%,8%,35%,40%,67%,72%,100%{border-color:rgba(255,255,255,.75);box-shadow:none}20%,29%{border-color:#f3355b;box-shadow:0 0 0 1px #f3355b,0 0 26px rgba(254,44,85,.8)}52%,61%{border-color:#54a0ff;box-shadow:0 0 0 1px #54a0ff,0 0 26px rgba(84,160,255,.8)}84%,93%{border-color:#fff;box-shadow:0 0 0 1px #fff,0 0 26px rgba(255,255,255,.8)}}
+@keyframes tutpress{0%,4%,30%,36%,62%,68%,94%,100%{transform:scale(1)}7%,28%,39%,60%,71%,92%{transform:scale(.93)}}
+@keyframes tutring{0%,4%{opacity:0;transform:scale(.4)}7%,28%{opacity:1;transform:scale(1)}31%,36%{opacity:0;transform:scale(.4)}39%,60%{opacity:1;transform:scale(1)}63%,68%{opacity:0;transform:scale(.4)}71%,92%{opacity:1;transform:scale(1)}95%,100%{opacity:0;transform:scale(.4)}}
 .card .tx{position:absolute;left:18px;right:18px;bottom:22px;display:flex;flex-direction:column;gap:6px}
 .card .tx b{font-size:28px;font-weight:700;line-height:1.05}
 .card .tx span{font-size:13px;color:rgba(255,255,255,.8)}
 .card .tags{display:flex;gap:6px}
 .card .tags i{font-style:normal;font-size:11px;font-weight:600;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:4px}
-.card{--g:0;--b:0}
+.card{--g:0;--b:0;--w:0}
 .card .sp{position:absolute;font-style:normal;font-size:18px;color:#fff;text-shadow:0 0 6px rgba(254,44,85,.9),0 0 14px rgba(254,44,85,.6);opacity:0;transition:opacity .2s;pointer-events:none}
 .card.glow-go .sp:not(.burst){opacity:1;animation:twinkle 1s ease-in-out infinite}.card.glow-go .sp:nth-of-type(2){animation-delay:.2s}.card.glow-go .sp:nth-of-type(3){animation-delay:.45s}.card.glow-go .sp:nth-of-type(4){animation-delay:.65s}.card.glow-go .sp:nth-of-type(5){animation-delay:.3s}
 @keyframes twinkle{0%,100%{transform:scale(.55) rotate(0);opacity:.45}50%{transform:scale(1.3) rotate(25deg);opacity:1}}
@@ -245,7 +245,8 @@ img{display:block}
 .card.glow-pass{box-shadow:0 14px 34px rgba(0,0,0,.6),0 0 0 calc(1px + 1.5px*var(--b)) rgba(84,160,255,calc(.3 + .7*var(--b))),0 0 calc(6px + 30px*var(--b)) rgba(84,160,255,calc(.25 + .6*var(--b))),0 0 calc(60px*var(--b)) rgba(84,160,255,calc(.35*var(--b)))}
 .card.fly-right{transform:translate(140%,-10%) rotate(22deg)!important;opacity:0}
 .card.fly-left{transform:translate(-140%,-10%) rotate(-22deg)!important;opacity:0}
-.card.fly-down{transform:translateY(60%) scale(.8)!important;opacity:0}
+.card.fly-down{transform:translateY(70%) scale(.86)!important;opacity:0}
+.card.glow-mid{box-shadow:0 14px 34px rgba(0,0,0,.6),0 0 0 calc(1px + 1.5px*var(--w)) rgba(255,255,255,calc(.3 + .7*var(--w))),0 0 calc(6px + 30px*var(--w)) rgba(255,255,255,calc(.2 + .55*var(--w))),0 0 calc(60px*var(--w)) rgba(255,255,255,calc(.3*var(--w)))}
 .card.b1{transform:translateY(22px) scale(.95);filter:blur(1.5px);opacity:.85}
 .card.b2{transform:translateY(42px) scale(.9);filter:blur(4px);opacity:.5}
 .acts{display:flex;justify-content:center;gap:34px;padding:0 12px 4px;position:relative;z-index:2}
@@ -256,6 +257,8 @@ img{display:block}
 .acts .cir .ic{position:relative;width:26px;height:26px;overflow:visible}.acts .ic .f0{opacity:calc(1 - var(--p))}.acts .ic .f1{opacity:var(--p)}.acts .ic .fill{fill:currentColor}.acts .ic .star{stroke-width:.5;transform-origin:12px 9.2px;transform:scale(calc(.6 + .6*var(--p))) rotate(calc(-40deg + 40deg*var(--p)))}
 .acts button:active .cir{transform:scale(.94)}
 .acts .go{--c:var(--red)}.acts .go .cir{transform:scale(calc(1 + .3*var(--p))) rotate(calc(6deg*var(--p)));box-shadow:0 4px 10px rgba(0,0,0,.4),0 0 0 calc(6px*var(--p)) rgba(254,44,85,.22),0 0 calc(30px*var(--p)) rgba(254,44,85,.85)}
+.acts .mid{--c:#fff}.acts .mid .cir{transform:scale(calc(1 + .24*var(--p)));box-shadow:0 4px 10px rgba(0,0,0,.4),0 0 0 calc(6px*var(--p)) rgba(255,255,255,.18),0 0 calc(26px*var(--p)) rgba(255,255,255,.7)}.acts .mid .cir .ic{color:#fff;transition:color .15s}.acts .mid.lit .cir .ic{color:#111}
+.acts .mid.pop .cir{animation:midpop .5s ease-out}@keyframes midpop{35%{transform:scale(1.34) translateY(6px)}70%{transform:scale(1.26) translateY(-3px)}}
 .acts .pass{--c:var(--blue)}.acts .pass .cir{transform:scale(calc(1 + .24*var(--p))) rotate(calc(-10deg*var(--p)));box-shadow:0 4px 10px rgba(0,0,0,.4),0 0 0 calc(6px*var(--p)) rgba(84,160,255,.22),0 0 calc(28px*var(--p)) rgba(84,160,255,.85)}
 .acts .go.pop .cir{animation:gopop .55s ease-out}@keyframes gopop{30%{transform:scale(1.42) rotate(12deg)}55%{transform:scale(1.36) rotate(-9deg)}78%{transform:scale(1.3) rotate(5deg)}}
 .acts .pass.pop .cir{animation:passpop .55s ease-out}@keyframes passpop{30%{transform:scale(1.3) rotate(-14deg)}55%{transform:scale(1.25) rotate(10deg)}78%{transform:scale(1.22) rotate(-6deg)}}
@@ -284,7 +287,7 @@ img{display:block}
 .mem.swiping .a .ring{opacity:1}
 .mem.swiping .a img{box-shadow:0 0 16px rgba(254,44,85,.5)}
 .mem b{font-size:13px;font-weight:600}
-.mem span{font-size:11px;color:var(--fg2)}
+.mem span{display:none}
 .mem.swiping span{color:var(--red)}
 .count{display:flex;align-items:center;gap:8px;background:rgba(20,20,22,.8);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:500;margin-top:8px}
 .count b{font-variant-numeric:tabular-nums;font-size:14px}
@@ -446,11 +449,11 @@ img{display:block}
     <svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 10v6M12 7v.5"/></svg>
   </div>
   <div class="deck" id="deck"></div>
-  <div class="tut" id="tut"><div class="tscene"><svg class="arr l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg><svg class="arr r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg><div class="tcard"></div><div class="hg"><div class="ring"></div><svg class="hand" viewBox="0 0 64 72" fill="rgba(0,0,0,.35)" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 36V12a4 4 0 018 0v20M28 30a4 4 0 018 0v6M36 32a4 4 0 018 0v6M44 34a3.5 3.5 0 017 0v9c0 11-7 19-17 19h-4c-6 0-10-3-13-8L9 42a4 4 0 017-4l4 5"/></svg></div></div><p>Swipe right for Must go,<br>left for Not for me</p></div>
+  <div class="tut" id="tut"><div class="tscene"><svg class="arr l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg><svg class="arr r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg><svg class="arr d" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg><div class="tcard"></div><div class="hg"><div class="ring"></div><svg class="hand" viewBox="0 0 64 72" fill="rgba(0,0,0,.35)" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 36V12a4 4 0 018 0v20M28 30a4 4 0 018 0v6M36 32a4 4 0 018 0v6M44 34a3.5 3.5 0 017 0v9c0 11-7 19-17 19h-4c-6 0-10-3-13-8L9 42a4 4 0 017-4l4 5"/></svg></div></div><p>Right = Must go · Left = Not for me<br>Down = Either way</p></div>
   <div class="sticker" id="sticker">😋 MUST GO!</div>
   <div class="acts">
     <button class="pass" id="b-pass"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path class="f0" d="M9 10h.01M15 10h.01M15.5 15.5a5 5 0 00-7 0"/><path class="f1" d="M7 8.5l3.2 1.3M17 8.5l-3.2 1.3M9 12h.01M15 12h.01M16.3 17.3a5.2 5.2 0 00-8.6 0"/></svg></span>Not for me</button>
-    <button id="b-mid"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M9 15h6"/></svg></span>Either way</button>
+    <button class="mid" id="b-mid"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM9 10h.01M15 10h.01M9 15h6"/></svg></span>Either way</button>
     <button class="go" id="b-go"><span class="cir"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path class="f0" d="M9 10h.01M15 10h.01M8 14a4.5 4.5 0 008 0z"/><path class="f1 fill star" d="M9.00 6.70 L9.62 8.35 L11.38 8.43 L10.00 9.52 L10.47 11.22 L9.00 10.25 L7.53 11.22 L8.00 9.52 L6.62 8.43 L8.38 8.35z M15.00 6.70 L15.62 8.35 L17.38 8.43 L16.00 9.52 L16.47 11.22 L15.00 10.25 L13.53 11.22 L14.00 9.52 L12.62 8.43 L14.38 8.35z"/><path class="f1 fill" d="M7.5 14.2h9a4.5 4.5 0 01-9 0z"/></svg></span>Must go</button>
   </div>
   <div class="hint skip" id="skiphint"><svg class="ic chev" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg><span>Swipe up for the next one</span></div>
@@ -515,7 +518,7 @@ function reset(){state={selected:P.map(p=>p.id),votes:{},deckIds:[],idx:0,winner
 
 /* ---------- screens ---------- */
 const S={chat:$('#s-chat'),select:$('#s-select'),swipe:$('#s-swipe'),wait:$('#s-wait'),res:$('#s-res')};
-function show(name){Object.entries(S).forEach(([k,e])=>{if(k===name){e.classList.remove('off','off-left','off-fade');}else if(!e.classList.contains('off')){e.classList.add(k==='chat'?'off-left':'off');}});}
+function show(name){Object.entries(S).forEach(([k,e])=>{if(k===name){e.classList.remove('off','off-left','off-fade');}else if(!e.classList.contains('off')){e.classList.add(k==='chat'?'off-left':'off');}});if(name==='chat'){const sb=msgs.style.scrollBehavior;msgs.style.scrollBehavior='auto';msgs.scrollTop=msgs.scrollHeight;msgs.style.scrollBehavior=sb;setTimeout(()=>{msgs.scrollTop=msgs.scrollHeight;},60);}}
 
 /* ---------- chat ---------- */
 const msgs=$('#msgs');
@@ -592,22 +595,23 @@ function renderDeck(){deck.innerHTML='';const ids=state.deckIds;for(let k=2;k>=0
  $('#sw-cnt').textContent=(state.idx+1)+' of '+ids.length;attachDrag();}
 let drag=null;
 function setP(btn,p){btn.style.setProperty('--p',p);btn.classList.toggle('lit',p>.35);}
-function resetBtns(){setP($('#b-go'),0);setP($('#b-pass'),0);}
+function resetBtns(){setP($('#b-go'),0);setP($('#b-pass'),0);setP($('#b-mid'),0);}
 function top(){return deck.querySelector('.card:not(.b1):not(.b2)');}
 function playTop(){deck.querySelectorAll('video').forEach(v=>{v.pause();});const c=top();if(!c)return;const v=c.querySelector('video');if(v){v.muted=true;v.onplay=()=>c.classList.remove('paused');v.onpause=()=>{if(c===top())c.classList.add('paused');};v.play().catch(()=>{c.classList.add('paused');v.addEventListener('canplay',()=>{if(c===top())v.play().catch(()=>{});},{once:true});});}const n=deck.querySelector('.card.b1 video');if(n)n.preload='auto';}
 function attachDrag(){const c=top();if(!c)return;playTop();
  c.onpointerdown=e=>{if(c.classList.contains('fly-right')||c.classList.contains('fly-left')||c.classList.contains('fly-down'))return;drag={x:e.clientX,y:e.clientY,dx:0,dy:0};c.setPointerCapture(e.pointerId);c.classList.add('dragging');};
- c.onpointermove=e=>{if(!drag)return;drag.dx=e.clientX-drag.x;drag.dy=e.clientY-drag.y;const up=drag.dy<-18&&Math.abs(drag.dy)>Math.abs(drag.dx);const rot=up?0:drag.dx/14;c.style.transform=`translate(${up?drag.dx*0.3:drag.dx}px,${up?drag.dy:drag.dy*0.4}px) rotate(${rot}deg)`;$('#skiphint').classList.toggle('hot',up);
+ c.onpointermove=e=>{if(!drag)return;drag.dx=e.clientX-drag.x;drag.dy=e.clientY-drag.y;const vert=Math.abs(drag.dy)>Math.abs(drag.dx);const up=vert&&drag.dy<-18,down=vert&&drag.dy>18;const rot=vert?0:drag.dx/14;c.style.transform=`translate(${vert?drag.dx*0.3:drag.dx}px,${vert?drag.dy*(down?0.85:1):drag.dy*0.4}px) rotate(${rot}deg)`;$('#skiphint').classList.toggle('hot',up);const tw=Math.min(1,drag.dy/110);
   const g=c.querySelector('.stamp.go'),p=c.querySelector('.stamp.pass');const t=Math.min(1,Math.abs(drag.dx)/90);
-  if(up){g.classList.remove('on');p.classList.remove('on');g.style.opacity='';p.style.opacity='';c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);c.style.setProperty('--b',0);resetBtns();}
-  else if(drag.dx>18){g.classList.add('on');g.style.opacity=t;p.classList.remove('on');p.style.opacity='';c.classList.add('glow-go');c.classList.remove('glow-pass');c.style.setProperty('--g',t);c.style.setProperty('--b',0);setP($('#b-go'),t);setP($('#b-pass'),0);}
-  else if(drag.dx<-18){p.classList.add('on');p.style.opacity=t;g.classList.remove('on');g.style.opacity='';c.classList.add('glow-pass');c.classList.remove('glow-go');c.style.setProperty('--b',t);c.style.setProperty('--g',0);setP($('#b-pass'),t);setP($('#b-go'),0);}
-  else{g.classList.remove('on');p.classList.remove('on');g.style.opacity='';p.style.opacity='';c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);c.style.setProperty('--b',0);resetBtns();}};
+  if(down){g.classList.remove('on');p.classList.remove('on');g.style.opacity='';p.style.opacity='';c.classList.remove('glow-go','glow-pass');c.classList.add('glow-mid');c.style.setProperty('--g',0);c.style.setProperty('--b',0);c.style.setProperty('--w',tw);setP($('#b-go'),0);setP($('#b-pass'),0);setP($('#b-mid'),tw);}
+  else if(up){g.classList.remove('on');p.classList.remove('on');g.style.opacity='';p.style.opacity='';c.classList.remove('glow-go','glow-pass','glow-mid');c.style.setProperty('--g',0);c.style.setProperty('--b',0);c.style.setProperty('--w',0);resetBtns();}
+  else if(drag.dx>18){g.classList.add('on');g.style.opacity=t;p.classList.remove('on');p.style.opacity='';c.classList.add('glow-go');c.classList.remove('glow-pass','glow-mid');c.style.setProperty('--g',t);c.style.setProperty('--b',0);c.style.setProperty('--w',0);setP($('#b-go'),t);setP($('#b-pass'),0);setP($('#b-mid'),0);}
+  else if(drag.dx<-18){p.classList.add('on');p.style.opacity=t;g.classList.remove('on');g.style.opacity='';c.classList.add('glow-pass');c.classList.remove('glow-go','glow-mid');c.style.setProperty('--b',t);c.style.setProperty('--g',0);c.style.setProperty('--w',0);setP($('#b-pass'),t);setP($('#b-go'),0);setP($('#b-mid'),0);}
+  else{g.classList.remove('on');p.classList.remove('on');g.style.opacity='';p.style.opacity='';c.classList.remove('glow-go','glow-pass','glow-mid');c.style.setProperty('--g',0);c.style.setProperty('--b',0);c.style.setProperty('--w',0);resetBtns();}};
  c.onpointerup=c.onpointercancel=e=>{if(!drag)return;const dx=drag.dx,dy=drag.dy;drag=null;c.classList.remove('dragging');
   if(Math.abs(dx)<6&&Math.abs(dy)<6&&e.type==='pointerup'){const v=c.querySelector('video');if(v){v.paused?v.play().catch(()=>{}):v.pause();}}
   $('#skiphint').classList.remove('hot');
   const vertical=Math.abs(dy)>Math.abs(dx);
-  if(vertical&&dy<-70){skipCard();}else if(!vertical&&dx>100){vote(2);}else if(!vertical&&dx<-100){vote(0);}else{c.style.transform='';c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');c.style.setProperty('--g',0);c.style.setProperty('--b',0);resetBtns();}};}
+  if(vertical&&dy<-70){skipCard();}else if(vertical&&dy>80){vote(1);}else if(!vertical&&dx>100){vote(2);}else if(!vertical&&dx<-100){vote(0);}else{c.style.transform='';c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass','glow-mid');c.style.setProperty('--g',0);c.style.setProperty('--b',0);c.style.setProperty('--w',0);resetBtns();}};}
 /* swipe up: decide later — the card flies up and goes to the back of the deck */
 async function skipCard(){const c=top();if(!c)return;$('#skiphint').classList.add('gone');c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});c.classList.remove('glow-go','glow-pass');resetBtns();c.onpointerdown=null;c.classList.add('fly-up');
  const ids=state.deckIds;const [id]=ids.splice(state.idx,1);ids.push(id);await wait(320);renderDeck();}
@@ -616,7 +620,7 @@ async function vote(v){const c=top();if(!c)return;$('#skiphint').classList.add('
  c.querySelectorAll('.stamp').forEach(s=>{s.classList.remove('on');s.style.opacity='';});
  if(v===2){c.classList.add('glow-go','go-commit');c.style.setProperty('--g',1);sparkleBurst(c);const bg=$('#b-go');setP(bg,1);bg.classList.remove('pop');void bg.offsetWidth;bg.classList.add('pop');setTimeout(()=>{bg.classList.remove('pop');resetBtns();},520);const g=c.querySelector('.stamp.go');g.classList.add('on');g.style.opacity=1;const st=$('#sticker');st.classList.remove('on');void st.offsetWidth;st.classList.add('on');await wait(260);c.classList.add('fly-right');setTimeout(()=>st.classList.remove('on'),500);}
  else if(v===0){c.classList.add('glow-pass');c.style.setProperty('--b',1);const bp=$('#b-pass');setP(bp,1);bp.classList.remove('pop');void bp.offsetWidth;bp.classList.add('pop');setTimeout(()=>{bp.classList.remove('pop');resetBtns();},520);const p=c.querySelector('.stamp.pass');p.classList.add('on');p.style.opacity=1;await wait(200);c.classList.add('fly-left');}
- else{const m=c.querySelector('.stamp.mid');m.classList.add('on');await wait(260);c.classList.add('fly-down');}
+ else{c.classList.remove('glow-go','glow-pass');c.classList.add('glow-mid');c.style.setProperty('--w',1);const bm=$('#b-mid');setP(bm,1);bm.classList.remove('pop');void bm.offsetWidth;bm.classList.add('pop');setTimeout(()=>{bm.classList.remove('pop');resetBtns();},520);await wait(220);c.classList.add('fly-down');}
  c.onpointerdown=null;
  // promote others
  const b1=deck.querySelector('.card.b1'),b2=deck.querySelector('.card.b2');if(b1)b1.classList.remove('b1');if(b2){b2.classList.remove('b2');b2.classList.add('b1');}
