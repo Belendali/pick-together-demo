@@ -29,9 +29,12 @@ html.bars .gate{position:fixed}
 html.bars .composer:not(.open){padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
 html.bars .tooltip{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
 #app{position:relative;width:393px;height:852px;max-height:100%;background:var(--bg);overflow:hidden;border-radius:40px;box-shadow:0 30px 80px rgba(0,0,0,.6);user-select:none;-webkit-user-select:none}
-@media (max-width:480px),(max-height:900px){
+@media (max-width:480px){
   #app{width:100%;height:100%;border-radius:0;box-shadow:none}
 }
+/* desktop: keep the phone frame and scale it down to fit shorter windows */
+#app{transform-origin:50% 50%}
+@media (min-width:481px){html:not(.bars) body{background:radial-gradient(120% 90% at 50% 0%,#1d1d22 0%,#0b0b0d 70%)}html:not(.bars) #app{outline:1px solid rgba(255,255,255,.09);max-height:none}}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 img{display:block}
 .screen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;padding-top:calc(env(safe-area-inset-top,0px) + 8px);transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s;will-change:transform}
@@ -704,6 +707,8 @@ $('#replay').onclick=()=>{$('#replay').classList.remove('show');$('#reddot').cla
 
 /* ---------- boot ---------- */
 function boot(){reset();show('chat');playChat();}
+function fitFrame(){const app=$('#app');if(document.documentElement.classList.contains('bars')||window.innerWidth<=480){app.style.transform='';return;}const s=Math.min(1,(window.innerHeight-24)/852,(window.innerWidth-24)/393);app.style.transform=s<1?`scale(${s.toFixed(3)})`:'';}
+window.addEventListener('resize',fitFrame);fitFrame();
 const standalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;
 const touch=('ontouchstart' in window)&&window.innerWidth<=600;
 if(touch&&!standalone){
