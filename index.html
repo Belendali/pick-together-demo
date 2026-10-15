@@ -17,7 +17,9 @@
   --red:#fe2c55; --green:#3bd27a; --blue:#54a0ff; --cyan:#25f4ee;
   --font:-apple-system,"SF Pro Text","SF Pro Display",system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
   color-scheme:dark;
+  --sab:env(safe-area-inset-bottom,0px); --sat:env(safe-area-inset-top,0px);
 }
+html.pc{--sab:34px;--sat:44px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;margin:0;background:#000;color:var(--fg);font-family:var(--font);overflow:hidden;overscroll-behavior:none}
 body{display:flex;align-items:center;justify-content:center}
@@ -26,22 +28,26 @@ html.bars body{display:block;min-height:calc(100lvh + 320px)}
 html.bars #app{position:fixed;inset:0;width:100%;height:100vh;height:100dvh;max-height:none;margin:0;border-radius:0}
 html.bars .gate{position:fixed}
 /* in-browser only: Safari's minimized toolbar eats the first tap near the bottom edge, so keep the composer above that zone (Home Screen / standalone keeps the exact TikTok spacing) */
-html.bars .composer:not(.open){padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
-html.bars .tooltip{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
+html.bars .composer:not(.open){padding-bottom:calc(30px + var(--sab))}
+html.bars .tooltip{bottom:calc(86px + var(--sab))}
 #app{position:relative;width:393px;height:852px;max-height:100%;background:var(--bg);overflow:hidden;border-radius:40px;box-shadow:0 30px 80px rgba(0,0,0,.6);user-select:none;-webkit-user-select:none}
 @media (max-width:480px){
   #app{width:100%;height:100%;border-radius:0;box-shadow:none}
 }
 /* desktop: keep the phone frame and scale it down to fit shorter windows */
 #app{transform-origin:50% 50%}
+.pcbar,.pchome{display:none}
+html.pc .pcbar{display:flex;position:absolute;left:0;right:0;top:0;height:54px;padding:16px 32px 0 36px;align-items:center;justify-content:space-between;font-size:17px;font-weight:600;letter-spacing:-.2px;z-index:40;pointer-events:none}
+html.pc .pcbar .ico{display:flex;align-items:center;gap:7px}
+html.pc .pchome{display:block;position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:#fff;z-index:40;pointer-events:none}
 @media (min-width:481px){html:not(.bars) body{background:radial-gradient(120% 90% at 50% 0%,#1d1d22 0%,#0b0b0d 70%)}html:not(.bars) #app{outline:1px solid rgba(255,255,255,.09);max-height:none}}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 img{display:block}
-.screen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;padding-top:calc(env(safe-area-inset-top,0px) + 8px);transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s;will-change:transform}
+.screen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;padding-top:calc(var(--sat) + 8px);transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s;will-change:transform}
 .screen.off{transform:translateX(100%);opacity:0;pointer-events:none}
 .screen.off-left{transform:translateX(-18%);opacity:0;pointer-events:none}
 .screen.off-fade{opacity:0;pointer-events:none}
-.statusbar{height:48px;flex:0 0 48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:15px;font-weight:600;padding-top:env(safe-area-inset-top,0px);height:calc(48px + env(safe-area-inset-top,0px));flex-basis:calc(48px + env(safe-area-inset-top,0px))}
+.statusbar{height:48px;flex:0 0 48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:15px;font-weight:600;padding-top:var(--sat);height:calc(48px + var(--sat));flex-basis:calc(48px + var(--sat))}
 .statusbar .sig{display:flex;gap:6px;align-items:center;font-size:12px}
 .statusbar .bat{width:25px;height:12px;border:1.5px solid #fff;border-radius:4px;position:relative}
 .statusbar .bat::after{content:"";position:absolute;inset:2px;background:#fff;border-radius:1.5px}
@@ -83,7 +89,7 @@ img{display:block}
 .post .pl{display:flex;align-items:center;gap:2px;padding:4px 8px;height:36px;font-size:12px;font-weight:500;line-height:1.3;background:#272727}
 .post .pl img{width:25px;height:28px}
 .fwd{width:32px;height:32px;align-self:center;flex:0 0 auto}
-.composer{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:10px 16px calc(8px + env(safe-area-inset-bottom,0px)) 14px;background:var(--bg);transition:padding .32s cubic-bezier(.2,.8,.2,1)}
+.composer{flex:0 0 auto;display:flex;align-items:center;gap:11px;padding:10px 16px calc(8px + var(--sab)) 14px;background:var(--bg);transition:padding .32s cubic-bezier(.2,.8,.2,1)}
 .composer .cam{width:26px;height:26px;flex:0 0 auto}
 .composer .pill{flex:1;height:43px;border-radius:999px;background:#1c1c1f;display:flex;align-items:center;gap:10px;padding:0 8px 0 18px;color:#8f8f94;font-size:15px}
 .composer .pill span{flex:1}
@@ -94,14 +100,14 @@ img{display:block}
 .composer .plus .i-kb{opacity:0}.composer .plus.on .i-kb{opacity:1}.composer .plus.on .i-plus{opacity:0} /* + when closed, keyboard while the tools panel is open (TikTok) */
 .composer .plus .dot{position:absolute;right:0;top:0;width:8px;height:8px;border-radius:50%;background:var(--red);transform:scale(0);transition:transform .25s cubic-bezier(.2,.9,.3,1.4)}
 .composer .plus .dot.show{transform:scale(1)}
-.tooltip{position:absolute;right:12px;bottom:calc(64px + env(safe-area-inset-bottom,0px));background:#3b3b3d;color:#fff;border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.3;box-shadow:0 4px 12px rgba(0,0,0,.35);opacity:0;transform:translateY(6px);transition:all .3s;pointer-events:none}
+.tooltip{position:absolute;right:12px;bottom:calc(64px + var(--sab));background:#3b3b3d;color:#fff;border-radius:12px;padding:12px 16px;font-size:15px;line-height:1.3;box-shadow:0 4px 12px rgba(0,0,0,.35);opacity:0;transform:translateY(6px);transition:all .3s;pointer-events:none}
 .tooltip.show{opacity:1;transform:none}
 .tooltip::after{content:"";position:absolute;right:22px;bottom:-8px;border:9px solid transparent;border-top-color:#3b3b3d;border-bottom:0}
 
 /* plus menu: rows at y578 when open; composer sits 33pt above */
 .composer.open{padding-bottom:8px} /* menu open: the safe-area gap moves below the menu */
 .plusmenu{flex:0 0 auto;height:0;overflow:hidden;background:var(--bg);transition:height .32s cubic-bezier(.2,.8,.2,1)}
-.plusmenu.show{height:calc(280px + env(safe-area-inset-bottom,0px))}
+.plusmenu.show{height:calc(280px + var(--sab))}
 .plusmenu .grid{display:flex;flex-direction:column;gap:26px;padding:15px 16px 0 12px}
 .plusmenu .r{display:flex}
 .plusmenu .it{width:93px;display:flex;flex-direction:column;align-items:center;gap:10px;font-size:12px;line-height:1.25;color:#ccccd1;text-align:center;position:relative}
@@ -111,7 +117,7 @@ img{display:block}
 /* sheets */
 .dim{position:absolute;inset:0;background:rgba(0,0,0,.6);opacity:0;transition:opacity .3s;pointer-events:none}
 .dim.show{opacity:1;pointer-events:auto}
-.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--sheet);border-radius:20px 20px 0 0;padding:14px 24px calc(34px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .38s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;align-items:center;gap:16px}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--sheet);border-radius:20px 20px 0 0;padding:14px 24px calc(34px + var(--sab));transform:translateY(105%);transition:transform .38s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;align-items:center;gap:16px}
 .sheet.show{transform:none}
 .sheet .x{align-self:flex-end;width:28px;height:28px;display:grid;place-items:center}
 .sheet h2{margin:0;font-size:24px;font-weight:700;text-align:center;letter-spacing:-.2px}
@@ -144,7 +150,7 @@ img{display:block}
 .selp .ck svg{opacity:0;transition:opacity .15s}
 .selp.on .ck{background:var(--red);border-color:var(--red)}
 .selp.on .ck svg{opacity:1}
-.sel-foot{padding:12px 16px calc(30px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.sel-foot{padding:12px 16px calc(30px + var(--sab));border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .thumbs{display:flex}
 .thumbs img{width:36px;height:36px;border-radius:8px;object-fit:cover;border:2px solid var(--bg);margin-left:-8px}
 .thumbs img:first-child{margin-left:0}
@@ -257,7 +263,7 @@ img{display:block}
 .card.glow-mid{box-shadow:0 14px 34px rgba(0,0,0,.6),0 0 0 calc(1px + 1.5px*var(--w)) rgba(255,255,255,calc(.3 + .7*var(--w))),0 0 calc(6px + 30px*var(--w)) rgba(255,255,255,calc(.2 + .55*var(--w))),0 0 calc(60px*var(--w)) rgba(255,255,255,calc(.3*var(--w)))}
 .card.b1{transform:translateY(22px) scale(.95);filter:blur(1.5px);opacity:.85}
 .card.b2{transform:translateY(42px) scale(.9);filter:blur(4px);opacity:.5}
-.acts{display:flex;justify-content:center;gap:34px;padding:0 12px calc(44px + env(safe-area-inset-bottom,0px));position:relative;z-index:2}
+.acts{display:flex;justify-content:center;gap:34px;padding:0 12px calc(44px + var(--sab));position:relative;z-index:2}
 /* vote buttons: all grey at rest; --p (0..1) follows the drag and tints / scales / morphs the face */
 .acts button{--p:0;display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12px;color:var(--fg2);transition:color .15s}.acts button.lit{color:#fff}
 .acts .cir{position:relative;overflow:hidden;width:56px;height:56px;border-radius:50%;background:var(--chip);display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.4);transition:transform .1s ease-out,box-shadow .1s}
@@ -270,7 +276,7 @@ img{display:block}
 .acts .pass{--c:var(--blue)}.acts .pass .cir{transform:scale(calc(1 + .24*var(--p))) rotate(calc(-10deg*var(--p)));box-shadow:0 4px 10px rgba(0,0,0,.4),0 0 0 calc(6px*var(--p)) rgba(84,160,255,.22),0 0 calc(28px*var(--p)) rgba(84,160,255,.85)}
 .acts .go.pop .cir{animation:gopop .55s ease-out}@keyframes gopop{30%{transform:scale(1.42) rotate(12deg)}55%{transform:scale(1.36) rotate(-9deg)}78%{transform:scale(1.3) rotate(5deg)}}
 .acts .pass.pop .cir{animation:passpop .55s ease-out}@keyframes passpop{30%{transform:scale(1.3) rotate(-14deg)}55%{transform:scale(1.25) rotate(10deg)}78%{transform:scale(1.22) rotate(-6deg)}}
-.hint{text-align:center;font-size:11px;color:var(--fg3);padding:4px 0 calc(16px + env(safe-area-inset-bottom,0px))}
+.hint{text-align:center;font-size:11px;color:var(--fg3);padding:4px 0 calc(16px + var(--sab))}
 .hint.skip{display:flex;flex-direction:column;align-items:center;gap:2px;color:rgba(255,255,255,.6);transition:color .15s}.hint.skip .chev{width:16px;height:16px;animation:nudge 1.6s ease-in-out infinite}.hint.skip.hot{color:#fff}.hint.skip.gone{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s,visibility 0s .3s}.hint.skip.gone .chev{animation:none}.hint.skip.gone span{visibility:hidden} /* iOS: also kill the animated child so the fade is honoured */
 .card.fly-up{transform:translateY(-130%) scale(.9) rotate(0)!important;opacity:0}
 .sticker{position:absolute;left:28px;top:44px;display:flex;align-items:center;gap:8px;background:#fff;color:var(--red);font-weight:800;font-size:28px;padding:10px 18px 10px 14px;border-radius:999px;border:5px solid #fff;box-shadow:0 6px 14px rgba(0,0,0,.45);transform:rotate(-10deg) scale(1.6);opacity:0;pointer-events:none}
@@ -305,11 +311,11 @@ img{display:block}
 .mine .r{display:flex;gap:8px}
 .mine .r img{width:64px;height:84px;border-radius:12px;object-fit:cover;border:2px solid var(--red)}
 .mine .r div{width:64px;height:84px;border-radius:12px;border:1px dashed rgba(255,255,255,.2);display:grid;place-items:center;font-size:10px;color:var(--fg3);text-align:center;line-height:1.2}
-.wait-foot{padding:10px 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;align-items:center;font-size:12px;color:rgba(255,255,255,.6)}
+.wait-foot{padding:10px 16px calc(24px + var(--sab));display:flex;flex-direction:column;gap:10px;align-items:center;font-size:12px;color:rgba(255,255,255,.6)}
 .wait-foot .two{width:100%;margin-top:0}.wait-foot .two .btn{height:46px;font-size:15px;border-radius:8px;gap:6px}.btn.ghost{color:#fff}
 
 /* ---------- RESULTS ---------- */
-.res{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.res{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 16px calc(24px + var(--sab))}
 .res::-webkit-scrollbar{display:none}
 .tie{border-radius:20px;background:linear-gradient(180deg,#5a0d24,#141416);padding:18px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;overflow:hidden}
 .tie h2{margin:0;font-size:24px;font-weight:700}
@@ -365,15 +371,17 @@ img{display:block}
 .rrow .avs span{border-color:#000;width:20px;height:20px}
 .rrow .pts{font-size:12px;color:var(--fg2);width:40px;text-align:right}
 .legend{display:flex;justify-content:center;gap:14px;font-size:11px;color:var(--fg3);margin-top:12px}
-.replay{position:absolute;left:50%;bottom:calc(100px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#fff;color:#000;font-weight:600;font-size:13px;padding:10px 16px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s}
+.replay{position:absolute;left:50%;bottom:calc(100px + var(--sab));transform:translateX(-50%);background:#fff;color:#000;font-weight:600;font-size:13px;padding:10px 16px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s}
 .replay.show{opacity:1;pointer-events:auto}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 .gate{position:absolute;inset:0;z-index:60;background:#000;display:none;align-items:center;justify-content:center}.gate.show{display:flex}.gate-in{display:flex;flex-direction:column;align-items:center;gap:10px;color:#fff}.gate-logo img{width:88px;height:88px}.gate-in b{font-size:22px;font-weight:700;margin-top:6px}.gate-in span{font-size:14px;color:rgba(255,255,255,.6)}.chevup{width:28px;height:28px;animation:nudge 1.2s ease-in-out infinite}@keyframes nudge{0%,100%{transform:translateY(4px);opacity:.5}50%{transform:translateY(-4px);opacity:1}}
-.fshint{position:absolute;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:50;background:#3b3b3d;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.3;display:flex;gap:10px;align-items:center;box-shadow:0 6px 16px rgba(0,0,0,.5);transform:translateY(-140%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}.fshint.show{transform:none}.fshint b{font-weight:600}.fshint button{margin-left:auto;color:#aaa;font-size:18px;padding:0 4px}
+.fshint{position:absolute;left:12px;right:12px;top:calc(var(--sat) + 10px);z-index:50;background:#3b3b3d;color:#fff;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.3;display:flex;gap:10px;align-items:center;box-shadow:0 6px 16px rgba(0,0,0,.5);transform:translateY(-140%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}.fshint.show{transform:none}.fshint b{font-weight:600}.fshint button{margin-left:auto;color:#aaa;font-size:18px;padding:0 4px}
 </style>
 </head>
 <body>
 <div id="app">
+<div class="pcbar"><span>9:41</span><span class="ico"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#fff"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#fff"/></svg><svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4.2a10 10 0 0114 0M4.3 7a6 6 0 018.4 0M7.1 9.7a2.3 2.3 0 012.8 0"/></svg><svg width="28" height="13" viewBox="0 0 28 13"><rect x="0.75" y="0.75" width="23.5" height="11.5" rx="3.5" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="1.5"/><rect x="2.5" y="2.5" width="20" height="8" rx="2" fill="#fff"/><path d="M26 4.5v4a2 2 0 000-4z" fill="#fff" fill-opacity=".4"/></svg></span></div>
+<div class="pchome"></div>
 <div class="gate" id="gate"><div class="gate-in"><div class="gate-logo"><img src="ui/m_pick.png" alt=""></div><b>Pick Together</b><span>Swipe up to start</span><svg class="ic chevup" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></div></div>
 
 <!-- ===================== CHAT ===================== -->
@@ -707,7 +715,7 @@ $('#replay').onclick=()=>{$('#replay').classList.remove('show');$('#reddot').cla
 
 /* ---------- boot ---------- */
 function boot(){reset();show('chat');playChat();}
-function fitFrame(){const app=$('#app');if(document.documentElement.classList.contains('bars')||window.innerWidth<=480){app.style.transform='';return;}const s=Math.min(1,(window.innerHeight-24)/852,(window.innerWidth-24)/393);app.style.transform=s<1?`scale(${s.toFixed(3)})`:'';}
+function fitFrame(){const app=$('#app');const pc=!document.documentElement.classList.contains('bars')&&window.innerWidth>480;document.documentElement.classList.toggle('pc',pc);if(!pc){app.style.transform='';return;}const s=Math.min(1,(window.innerHeight-24)/852,(window.innerWidth-24)/393);app.style.transform=s<1?`scale(${s.toFixed(3)})`:'';}
 window.addEventListener('resize',fitFrame);fitFrame();
 const standalone=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches;
 const touch=('ontouchstart' in window)&&window.innerWidth<=600;
